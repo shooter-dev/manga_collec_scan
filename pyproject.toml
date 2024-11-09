@@ -5,7 +5,7 @@ description = ""
 authors = ["shooterdev <vincentbleach@gmail.com>"]
 readme = "README.md"
 
-package-mode = false
+package-mode = "whatever-value"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -15,6 +15,8 @@ requests = "^2.32.3"
 pillow = "^10.4.0"
 #mangacollect = {path = "/Users/shooterdev/Labs/PycharmProjects/mangacollect"}
 psutil = "^6.1.0"
+screen-brightness-control = "^0.24.0"
+brightness = "^0.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
