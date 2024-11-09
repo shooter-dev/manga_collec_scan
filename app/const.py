@@ -83,17 +83,25 @@ COLOR_READ = QColor(61, 90, 254)
 COLOR_CART = QColor(245, 176, 39)
 
 # FONT
-family_helvetica: str = "Monospace"
-#family_helvetica: str = "Helvetica"
-FONT_11: QFont = QFont(family_helvetica, 11, 50)
-FONT_12: QFont = QFont(family_helvetica, 12, 50)
-FONT_14: QFont = QFont(family_helvetica, 14, 50)
-FONT_16: QFont = QFont(family_helvetica, 16, 50)
-FONT_17: QFont = QFont(family_helvetica, 17, 50)
-FONT_18: QFont = QFont(family_helvetica, 18, 50)
-FONT_42: QFont = QFont(family_helvetica, 42, 50)
+#family_helvetica: str = "Monospace"
+family_helvetica: str = "Helvetica"
+FONT_11: QFont = QFont(family_helvetica)
+FONT_11.setPixelSize(11)
+FONT_12: QFont = QFont(family_helvetica)
+FONT_12.setPixelSize(12)
+FONT_14: QFont = QFont(family_helvetica)
+FONT_14.setPixelSize(14)
+FONT_16: QFont = QFont(family_helvetica)
+FONT_16.setPixelSize(16)
+FONT_17: QFont = QFont(family_helvetica)
+FONT_17.setPixelSize(17)
+FONT_18: QFont = QFont(family_helvetica)
+FONT_18.setPixelSize(18)
+FONT_42: QFont = QFont(family_helvetica)
+FONT_42.setPixelSize(42)
 FONT_42.setBold(True)
-FONT_26: QFont = QFont(family_helvetica, 26, 50)
+FONT_26: QFont = QFont(family_helvetica)
+FONT_26.setPixelSize(26)
 
 # SIZE
 SIZE_BUTTON_MENU: QSize = QSize(64, 64)
