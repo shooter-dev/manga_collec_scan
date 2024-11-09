@@ -5,19 +5,18 @@ from PyQt5.QtWidgets import QStackedWidget, QVBoxLayout, QWidget, QBoxLayout, QH
 
 from app.widgets.bar_status.bar_status import BarStatusWidget
 from app.widgets.left_menu.left_menu import LeftMenu
-from main_test import MainWindow
 
 
 class UiMainWindow(QObject):
 
-    def setup_ui(self, window: MainWindow, layout: QBoxLayout) -> Any:
+    def setup_ui(self, window: "MainWindow", layout: QBoxLayout) -> Any:
         self.init_page(window)
         self.create_widgets(window)
         self.modify_widgets(window)
         self.create_layouts(layout)
         self.widgets_to_layouts(window)
 
-    def init_page(self, win: MainWindow):
+    def init_page(self, win: "MainWindow"):
         win.setWindowFlag(Qt.FramelessWindowHint)
         win.setGeometry(QRect(60, 0, 800, 480))
         #win.showFullScreen()

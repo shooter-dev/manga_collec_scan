@@ -17,7 +17,7 @@ from app.lib.interface_widget import InterfaceWidget
 class Ui_LeftMenu(InterfaceWidget):
 
     def init(self, main_form: QWidget):
-        size = QSize(67, 480)
+        size = QSize(67, 1256)
         main_form.setMinimumSize(size)
         main_form.setMaximumSize(size)
         main_form.setStyleSheet(f"""
