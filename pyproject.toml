@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "mangacollecscan"
+version = "0.1.0"
+description = ""
+authors = ["shooterdev <vincentbleach@gmail.com>"]
+readme = "README.md"
+
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^1.0.1"
+pyqt5 = "^5.15.9"
+requests = "^2.32.3"
+pillow = "^10.4.0"
+#mangacollect = {path = "/Users/shooterdev/Labs/PycharmProjects/mangacollect"}
+psutil = "^6.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+flake8 = "^7.1.1"
+coverage = "^7.6.1"
+
+
+[tool.flake8]
+max-line-length = 80
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
