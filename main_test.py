@@ -1,4 +1,6 @@
 import sys
+
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtCore import Qt
 
@@ -10,7 +12,8 @@ class MyWindow(QWidget):
 
         # Créer un label pour afficher un carré de 10x10 pixels
         label = QLabel(self)
-        label.setText("10x10 pixels")
+        label.setText("Nouveautés")
+        label.setFont(QFont("Arial", 18))
         label.setStyleSheet("background-color: red;")
         label.setGeometry(1, 1, 718, 1278)  # Spécifiez la taille exacte en pixels
 
