@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel
-import screen_brightness_control as sbc
+import brightness
 
 class BrightnessControlApp(QWidget):
     def __init__(self):
@@ -14,7 +14,7 @@ class BrightnessControlApp(QWidget):
 
         # Essayer de récupérer la luminosité actuelle
         try:
-            current_brightness = sbc.get_brightness()  # Luminosité en pourcentage
+            current_brightness = brightness.get_brightness()  # Luminosité en pourcentage
         except Exception as e:
             current_brightness = 50  # Valeur par défaut si l'appel échoue
             print(f"Erreur lors de la récupération de la luminosité : {e}")
@@ -36,7 +36,7 @@ class BrightnessControlApp(QWidget):
 
     def update_brightness(self):
         # Mise à jour de la luminosité
-        sbc.set_brightness(self.slider.value())  # Mettre la luminosité à la valeur du slider
+        brightness.set(self.slider.value())  # Mettre la luminosité à la valeur du slider
         self.label.setText(f'Luminosité : {self.slider.value()}%')
 
 if __name__ == '__main__':
