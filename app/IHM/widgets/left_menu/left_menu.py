@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QHBoxLayout, QPushButton, QWidget
 from app.const import RESOURCE_NEWS, RESOURCE_HOME, \
     RESOURCE_COLLECTION, RESOURCE_PLANNING, RESOURCE_SEARCH, RESOURCE_PANIER, RESOURCE_ACCOUNT, RESOURCE_ACCOUNT_HOVER, RESOURCE_PANIER_HOVER, RESOURCE_SEARCH_HOVER, RESOURCE_PLANNING_HOVER, \
     RESOURCE_COLLECTION_HOVER
-from app.widgets.left_menu.ui_left_menu import Ui_LeftMenu
+from app.IHM.widgets.left_menu.ui_left_menu import Ui_LeftMenu
 
 
 class LeftMenu(QWidget):

@@ -1,10 +1,10 @@
 from typing import Any
 
 from PyQt5.QtCore import QObject, Qt, QRect
-from PyQt5.QtWidgets import QStackedWidget, QVBoxLayout, QWidget, QBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QStackedWidget, QWidget, QBoxLayout, QHBoxLayout
 
-from app.widgets.bar_status.bar_status import BarStatusWidget
-from app.widgets.left_menu.left_menu import LeftMenu
+from app.IHM.widgets.bar_status.bar_status import BarStatusWidget
+from app.IHM.widgets.left_menu.left_menu import LeftMenu
 
 
 class UiMainWindow(QObject):

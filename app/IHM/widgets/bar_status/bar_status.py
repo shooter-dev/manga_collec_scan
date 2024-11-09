@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QHBoxLayout
 
-from app.widgets.bar_status.ui_bar_status import UiBarStatus
+from app.IHM.widgets.bar_status.ui_bar_status import UiBarStatus
 
 
 class BarStatusWidget(QWidget):
