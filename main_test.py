@@ -6,13 +6,13 @@ class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Affichage exact de 10 pixels")
-        self.setGeometry(1, 1, 1280, 720)
+        self.setGeometry(1, 1, 720, 1280)
 
         # Créer un label pour afficher un carré de 10x10 pixels
         label = QLabel(self)
         label.setText("10x10 pixels")
         label.setStyleSheet("background-color: red;")
-        label.setGeometry(1, 1, 1278, 718)  # Spécifiez la taille exacte en pixels
+        label.setGeometry(1, 1, 718, 1278)  # Spécifiez la taille exacte en pixels
 
         self.show()
 
