@@ -1,35 +1,26 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Test DPI avec Mise à l'échelle")
-        self.setGeometry(100, 100, 800, 480)
+        self.setWindowTitle("Affichage exact de 10 pixels")
+        self.setGeometry(100, 100, 400, 300)
 
-        # Ajouter un label pour afficher un texte
-        self.label = QLabel(self)
-        self.label.setText("Ceci est un test du DPI et du facteur de mise à l'échelle.")
-        self.label.setGeometry(50, 100, 300, 50)  # Positionner le label dans la fenêtre
+        # Créer un label pour afficher un carré de 10x10 pixels
+        label = QLabel(self)
+        label.setText("10x10 pixels")
+        label.setStyleSheet("background-color: red;")
+        label.setGeometry(50, 50, 10, 10)  # Spécifiez la taille exacte en pixels
 
-        # Obtenir l'instance de l'écran et le DPI
-        screen = QApplication.primaryScreen()
-        dpi = screen.logicalDotsPerInch()  # DPI de l'écran
-        scale_factor = dpi / 96  # Calcul du facteur de mise à l'échelle
-
-        print(f"DPI de l'écran : {dpi}")
-        print(f"Facteur de mise à l'échelle : {scale_factor}")
-
-        # Appliquer le facteur de mise à l'échelle à la taille de police du label
-        font = QFont()
-        font.setPointSizeF(scale_factor * 10)  # Ajuster la taille de la police selon le DPI
-        self.label.setFont(font)  # Appliquer la police mise à l'échelle au label
+        self.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    window = MyWindow()
-    window.show()
+    # Empêcher l'adaptation automatique de la mise à l'échelle pour les éléments graphiques
+    app.setAttribute(Qt.AA_EnableHighDpiScaling, False)
 
+    window = MyWindow()
     sys.exit(app.exec_())
