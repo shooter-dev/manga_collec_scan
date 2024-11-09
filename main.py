@@ -9,8 +9,8 @@ from app.lib.window.main_windows import MainWindow
 def main():
 
     app = QApplication(sys.argv)
-    app.setAttribute(Qt.AA_DisableHighDpiScaling, True)  # Désactiver la mise à l'échelle DPI
-    app.setAttribute(Qt.AA_Use96Dpi, True)  # Forcer un DPI standard
+    app.setAttribute(Qt.AA_DisableHighDpiScaling, False)  # Désactiver la mise à l'échelle DPI
+    #app.setAttribute(Qt.AA_Use96Dpi, True)  # Forcer un DPI standard
 
     app.setDesktopFileName("MangaCollecScan")
     size = recupere_dimension()
