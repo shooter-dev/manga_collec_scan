@@ -15,7 +15,7 @@ class MyWindow(QWidget):
         label.setText("Nouveautés")
         label.setFont(QFont("Arial", 18))
         label.setStyleSheet("background-color: red;")
-        label.setGeometry(1, 1, 718, 1278)  # Spécifiez la taille exacte en pixels
+        label.setGeometry(1, 1, 718, 21)  # Spécifiez la taille exacte en pixels
 
         self.show()
 
