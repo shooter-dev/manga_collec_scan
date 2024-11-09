@@ -10,10 +10,12 @@ class MyWindow(QWidget):
         self.setWindowTitle("Affichage exact de 10 pixels")
         self.setGeometry(1, 1, 720, 1280)
 
+        font = QFont()
+        font.setPixelSize(18)  # Taille exacte de la police en pixels
         # Créer un label pour afficher un carré de 10x10 pixels
         label = QLabel(self)
         label.setText("Nouveautés")
-        label.setFont(QFont("Arial", 18))
+        label.setFont(font)
         label.setStyleSheet("background-color: red;")
         label.setGeometry(1, 1, 718, 21)  # Spécifiez la taille exacte en pixels
 
