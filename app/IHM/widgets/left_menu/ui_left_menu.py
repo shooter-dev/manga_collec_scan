@@ -29,15 +29,13 @@ class Ui_LeftMenu(InterfaceWidget):
             
             QPushButton {{
                 border: 0px solid {STYLE_COLOR_BORDER};
-                border-radius: 23px;
-                padding-left: 9px;
-                padding-right: 9px;
+                border-radius: {(SIZE_BUTTON_MENU.height() /2)}px;
+                
             }}
             
             QPushButton:hover {{
                 border: 1px solid {STYLE_COLOR_BORDER};
                 background: {STYLE_COLOR_STATE_HOVER};
-                border-radius: 23px;
             }}
             
             #home_button {{

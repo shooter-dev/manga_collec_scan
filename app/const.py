@@ -96,7 +96,7 @@ FONT_42.setBold(True)
 FONT_26: QFont = QFont(family_helvetica, 26, 50)
 
 # SIZE
-SIZE_BUTTON_MENU: QSize = QSize(46, 46)
+SIZE_BUTTON_MENU: QSize = QSize(64, 64)
 SIZE_ICON_BUTTON_MENU: QSize = QSize(26, 26)
 SIZE_IMAGE_NEWS_ITEM: QSize = QSize(220, 330)
 SIZE_PAGE_MIN: QSize = QSize(732, 480)
