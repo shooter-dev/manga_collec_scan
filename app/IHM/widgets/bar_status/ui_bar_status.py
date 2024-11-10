@@ -64,7 +64,7 @@ class UiBarStatus(InterfaceWidget):
 
     def create_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.setSpacing(2)
+        self.main_layout.setSpacing(5)
 
     def widgets_to_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.addWidget(self.label_heure, 0, Qt.AlignLeft|Qt.AlignVCenter)
