@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPainter, QColor, QFont, QRgba64
 from PyQt5.QtWidgets import QStyledItemDelegate, QStyle
 
+from app.const import FONT_17
+
 
 class SizeDelegateComboBoxPublisher(QStyledItemDelegate):
     def __init__(self, parent=None):
@@ -20,7 +22,7 @@ class SizeDelegateComboBoxPublisher(QStyledItemDelegate):
             painter.fillRect(option.rect, QColor("#FFFFFF"))  # Couleur de l'élément non sélectionné
 
         # Définir une police personnalisée
-        font = QFont("Helvetica", 17, QFont.Normal)
+        font = FONT_17
         painter.setFont(font)
         painter.setPen(QColor("#000000"))  # Couleur du texte
         painter.drawText(option.rect, Qt.AlignCenter, index.data())
