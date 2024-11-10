@@ -15,6 +15,10 @@ class BarStatusWidget(QWidget):
         self.init_heure()
         self.init_info()
 
+        net_io = psutil.net_io_counters()
+        self.prev_bytes_sent = net_io.bytes_sent
+        self.prev_bytes_recv = net_io.bytes_recv
+
     def init_heure(self):
         self.timer_h = QTimer(self)
         self.timer_h.timeout.connect(self.update_time)
@@ -23,7 +27,7 @@ class BarStatusWidget(QWidget):
     def init_info(self):
         self.timer_info = QTimer(self)
         self.timer_info.timeout.connect(self.update_info)
-        self.timer_info.start(10)  # Actualisation toutes les 1000 ms (1 seconde)
+        self.timer_info.start(1000)  # Actualisation toutes les 1000 ms (1 seconde)
 
     def update_time(self):
         # Obtenir l'heure actuelle et l'afficher dans le label
@@ -31,15 +35,19 @@ class BarStatusWidget(QWidget):
         self.ui.label_heure.setText(current_time)
 
     def update_info(self):
-        #print(f"CPU Usage: {psutil.cpu_percent(interval=1)}%")
-        self.ui.label_cpu.setText(f" CPU: {psutil.cpu_percent(interval=1)}% ")
+        self.ui.label_cpu.setText(f" CPU: {psutil.cpu_percent()}% ")
+
         virtual_memory = psutil.virtual_memory()
-        #print(f"Total Memory: {virtual_memory.total / (1024 * 1024):.2f} MB")
-        #print(f"Used Memory: {virtual_memory.used / (1024 * 1024):.2f} MB")
         self.ui.label_memory.setText(f" MEM: {virtual_memory.used / (1024 * 1024):.2f}/{virtual_memory.total / (1024 * 1024):.2f} MB ")
+
+        self.update_debit()
+
+    def update_debit(self):
         net_io = psutil.net_io_counters()
-        #print(f"Bytes Sent: {net_io.bytes_sent / (1024 * 1024):.2f} MB")
-        self.ui.label_bytes_send.setText(f" S: {net_io.bytes_sent / (1024 * 1024):.2f} MB ")
-        #print(f"Bytes Received: {net_io.bytes_recv / (1024 * 1024):.2f} MB")
-        self.ui.label_bytes_rece.setText(f" R: {net_io.bytes_recv / (1024 * 1024):.2f} MB ")
+        bytes_sent_per_sec = (net_io.bytes_sent - self.prev_bytes_sent) / 1024  # en KB
+        bytes_recv_per_sec = (net_io.bytes_recv - self.prev_bytes_recv) / 1024  # en KB
+        self.prev_bytes_sent = net_io.bytes_sent
+        self.prev_bytes_recv = net_io.bytes_recv
+        self.ui.label_bytes_send.setText(f" S: {bytes_sent_per_sec:.2f} KB/s ")
+        self.ui.label_bytes_rece.setText(f" R: {bytes_recv_per_sec:.2f} KB/s ")
 
