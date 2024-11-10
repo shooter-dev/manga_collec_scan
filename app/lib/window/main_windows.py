@@ -41,6 +41,7 @@ class MainWindow(QMainWindow):
 
             index, page = self.__pages[name]
             self.ui.pages_stack.setCurrentIndex(index)
+            page.page_update()
 
             print(f"call {name} | {page}")
 
