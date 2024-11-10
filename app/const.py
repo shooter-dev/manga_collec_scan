@@ -13,8 +13,12 @@ RESOURCE_SEARCH: str = u":/icons/icons/black/search.svg"
 RESOURCE_PANIER: str = u":/icons/icons/black/shopping-cart.svg"
 RESOURCE_ACCOUNT: str = u":/icons/icons/black/user.svg"
 
+RESOURCE_CPU: str = u":/icons/icons/red/cpu.svg"
+RESOURCE_BYTES_SEND: str = u":/icons/icons/black/arrow-up-circle.svg"
+RESOURCE_BYTES_RECE: str = u":/icons/icons/black/arrow-down-circle.svg"
+
 RESOURCE_PAUSE: str = u":/icons/icons/black/pause.svg"
-RESOURCE_VALIDER: str = u":/icons/icons/black/check.svg"
+RESOURCE_VALIDER: str = u":/icons/black/check.svg"
 
 RESOURCE_ADD: str = u":/icons/icons/black/check.svg"
 RESOURCE_SUIVRE: str = u":/icons/icons/black/check.svg"
