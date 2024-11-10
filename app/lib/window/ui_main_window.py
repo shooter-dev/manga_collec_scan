@@ -1,6 +1,6 @@
 from typing import Any
 
-from PyQt5.QtCore import QObject, Qt, QRect
+from PyQt5.QtCore import QObject, Qt, QRect, QSize
 from PyQt5.QtWidgets import QStackedWidget, QWidget, QBoxLayout, QHBoxLayout
 
 from app.IHM.widgets.bar_status.bar_status import BarStatusWidget
@@ -9,7 +9,8 @@ from app.IHM.widgets.left_menu.left_menu import LeftMenu
 
 class UiMainWindow(QObject):
 
-    def setup_ui(self, window: "MainWindow", layout: QBoxLayout) -> Any:
+    def setup_ui(self, window: "MainWindow", layout: type(QBoxLayout)) -> Any:
+
         self.init_page(window)
         self.create_widgets(window)
         self.modify_widgets(window)
@@ -35,7 +36,9 @@ class UiMainWindow(QObject):
         self.pages_stack = QStackedWidget(win)  # Zone pour le contenu principal
 
     def modify_widgets(self, win):
-        pass
+        self.bar.setFixedSize(QSize(720, 24))
+        self.menu.setFixedSize(QSize(84, 1280-24))
+        self.pages_stack.setFixedSize(QSize(720-84, 1280-24))
 
     def create_layouts(self, layout):
         self.main_layout: QBoxLayout = layout(self.widget)

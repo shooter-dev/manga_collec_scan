@@ -1,46 +1,36 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QSlider, QLabel
-import brightness
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout
+from PyQt5.QtGui import QIcon, QPalette, QColor
+from PyQt5.QtCore import Qt
 
-class BrightnessControlApp(QWidget):
-    def __init__(self):
-        super().__init__()
+# Initialiser QApplication avec les arguments de ligne de commande
+app = QApplication(sys.argv)
 
-        self.setWindowTitle('Contrôle de la Luminosité')
-        self.setGeometry(100, 100, 300, 100)
+# Paramètres généraux de l'application
+app.setApplicationName("Exemple PyQt5")
+app.setApplicationVersion("1.0.0")
+app.setOrganizationName("MonOrganisation")
+app.setWindowIcon(QIcon("icon.png"))
 
-        # Initialisation de l'interface
-        self.layout = QVBoxLayout()
+# Configuration du style et de la palette
+app.setStyle("Fusion")
+palette = QPalette()
+palette.setColor(QPalette.Window, QColor("lightgrey"))
+app.setPalette(palette)
 
-        # Essayer de récupérer la luminosité actuelle
-        try:
-            current_brightness = brightness.get_brightness()  # Luminosité en pourcentage
-        except Exception as e:
-            current_brightness = 50  # Valeur par défaut si l'appel échoue
-            print(f"Erreur lors de la récupération de la luminosité : {e}")
+# Configuration de la fenêtre principale
+window = QWidget()
+window.setWindowTitle("Fenêtre Principale")
+window.setGeometry(100, 100, 300, 200)
 
-        # Label pour afficher la luminosité actuelle
-        self.label = QLabel(f'Luminosité : {current_brightness}%', self)
-        self.layout.addWidget(self.label)
+# Ajouter un label
+layout = QVBoxLayout()
+label = QLabel("Bienvenue dans mon application PyQt5 !")
+layout.addWidget(label)
+window.setLayout(layout)
 
-        # Slider pour ajuster la luminosité
-        self.slider = QSlider()
-        self.slider.setOrientation(1)  # Orientation verticale
-        self.slider.setRange(0, 100)  # Plage de 0 à 100%
-        self.slider.setValue(current_brightness)  # Valeur initiale de la luminosité
-        self.slider.valueChanged.connect(self.update_brightness)
-        self.layout.addWidget(self.slider)
+# Afficher la fenêtre
+window.show()
 
-        # Mettre en place la mise en page
-        self.setLayout(self.layout)
-
-    def update_brightness(self):
-        # Mise à jour de la luminosité
-        brightness.set(self.slider.value())  # Mettre la luminosité à la valeur du slider
-        self.label.setText(f'Luminosité : {self.slider.value()}%')
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = BrightnessControlApp()
-    window.show()
-    sys.exit(app.exec_())
+# Lancer la boucle d'événements de l'application
+sys.exit(app.exec_())
