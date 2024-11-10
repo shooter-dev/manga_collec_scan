@@ -36,9 +36,9 @@ class UiMainWindow(QObject):
         self.pages_stack = QStackedWidget(win)  # Zone pour le contenu principal
 
     def modify_widgets(self, win):
-        self.bar.setFixedSize(QSize(720, 24))
-        self.menu.setFixedSize(QSize(84, 1280-24))
-        self.pages_stack.setFixedSize(QSize(720-84, 1280-24))
+        self.bar.setFixedSize(QSize(720, 30))
+        self.menu.setFixedSize(QSize(84, 1280-30))
+        self.pages_stack.setFixedSize(QSize(720-84, 1280-30))
 
     def create_layouts(self, layout):
         self.main_layout: QBoxLayout = layout(self.widget)
