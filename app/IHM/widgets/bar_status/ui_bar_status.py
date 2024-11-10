@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QSpacerItem, QSizePolicy, QApplication, QMainWindow
 
 from app.const import FONT_18, FONT_16, RESOURCE_CPU, RESOURCE_HOME, RESOURCE_PLANNING, RESOURCE_BYTES_SEND, \
-    RESOURCE_BYTES_RECE, FONT_12
+    RESOURCE_BYTES_RECE, FONT_12, FONT_14, RESOURCE_CLOCK, RESOURCE_MEMORY
 from app.lib.interface_widget import InterfaceWidget
 
 
@@ -17,9 +17,11 @@ class UiBarStatus(InterfaceWidget):
 
     def create_widgets(self, main_form: QWidget) -> Any:
         self.label_heure = QLabel(main_form)
+        self.image_clock = QLabel(main_form)
         self.label_cpu = QLabel(main_form)
         self.image_cpu = QLabel(main_form)
         self.label_memory = QLabel(main_form)
+        self.image_memory = QLabel(main_form)
         self.label_bytes_send = QLabel(main_form)
         self.image_bytes_send = QLabel(main_form)
         self.label_bytes_rece = QLabel(main_form)
@@ -31,29 +33,37 @@ class UiBarStatus(InterfaceWidget):
         self.button_close = QPushButton(self.title_app)
 
     def modify_widgets(self, main_form: QWidget) -> Any:
-        self.label_heure.setFont(FONT_12)
+        size_image = QSize(24,24)
+
+        self.label_heure.setFont(FONT_14)
         self.label_heure.setText(" 00:00 ")
+        self.image_clock.setPixmap(QPixmap(RESOURCE_CLOCK))
+        self.image_clock.setScaledContents(True)
+        self.image_clock.setFixedSize(size_image)
 
         self.label_cpu.setFont(FONT_12)
         self.label_cpu.setText("CPU --- % ")
         self.image_cpu.setPixmap(QPixmap(RESOURCE_CPU))
         self.image_cpu.setScaledContents(True)
-        self.image_cpu.setFixedSize(QSize(24,24))
+        self.image_cpu.setFixedSize(size_image)
 
         self.label_memory.setFont(FONT_12)
         self.label_memory.setText("MEM -- MB ")
+        self.image_memory.setPixmap(QPixmap(RESOURCE_MEMORY))
+        self.image_memory.setScaledContents(True)
+        self.image_memory.setFixedSize(size_image)
 
         self.label_bytes_send.setFont(FONT_12)
         self.label_bytes_send.setText("Send -- MB ")
         self.image_bytes_send.setPixmap(QPixmap(RESOURCE_BYTES_SEND))
         self.image_bytes_send.setScaledContents(True)
-        self.image_bytes_send.setFixedSize(QSize(24,24))
+        self.image_bytes_send.setFixedSize(size_image)
 
         self.label_bytes_rece.setFont(FONT_12)
         self.label_bytes_rece.setText("Rece -- MB ")
         self.image_bytes_rece.setPixmap(QPixmap(RESOURCE_BYTES_RECE))
         self.image_bytes_rece.setScaledContents(True)
-        self.image_bytes_rece.setFixedSize(QSize(24,24))
+        self.image_bytes_rece.setFixedSize(size_image)
 
         size_btn = QSize(30, 30)
         self.button_close.setMinimumSize(size_btn)
@@ -67,11 +77,13 @@ class UiBarStatus(InterfaceWidget):
         self.main_layout.setSpacing(5)
 
     def widgets_to_layouts(self, main_form: QWidget) -> Any:
+        self.main_layout.addWidget(self.image_clock, 0, Qt.AlignLeft|Qt.AlignVCenter)
         self.main_layout.addWidget(self.label_heure, 0, Qt.AlignLeft|Qt.AlignVCenter)
         self.main_layout.addWidget(self.title_app, 0, Qt.AlignHCenter|Qt.AlignVCenter)
         self.main_layout.addSpacerItem(self.spacer)
         self.main_layout.addWidget(self.image_cpu, 0, Qt.AlignRight|Qt.AlignVCenter)
         self.main_layout.addWidget(self.label_cpu, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.main_layout.addWidget(self.image_memory, 0, Qt.AlignRight|Qt.AlignVCenter)
         self.main_layout.addWidget(self.label_memory, 0, Qt.AlignRight|Qt.AlignVCenter)
         self.main_layout.addWidget(self.image_bytes_rece, 0, Qt.AlignRight|Qt.AlignVCenter)
         self.main_layout.addWidget(self.label_bytes_rece, 0, Qt.AlignRight|Qt.AlignVCenter)

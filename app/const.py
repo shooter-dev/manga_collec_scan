@@ -13,7 +13,9 @@ RESOURCE_SEARCH: str = u":/icons/icons/black/search.svg"
 RESOURCE_PANIER: str = u":/icons/icons/black/shopping-cart.svg"
 RESOURCE_ACCOUNT: str = u":/icons/icons/black/user.svg"
 
-RESOURCE_CPU: str = u":/icons/icons/red/cpu.svg"
+RESOURCE_CLOCK: str = u":/icons/icons/black/clock.svg"
+RESOURCE_CPU: str = u":/icons/icons/black/info.svg"
+RESOURCE_MEMORY: str = u":/icons/icons/black/copy.svg"
 RESOURCE_BYTES_SEND: str = u":/icons/icons/black/arrow-up-circle.svg"
 RESOURCE_BYTES_RECE: str = u":/icons/icons/black/arrow-down-circle.svg"
 

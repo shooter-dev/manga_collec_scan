@@ -35,10 +35,10 @@ class BarStatusWidget(QWidget):
         self.ui.label_heure.setText(current_time)
 
     def update_info(self):
-        self.ui.label_cpu.setText(f"CPU: {psutil.cpu_percent()}%")
+        self.ui.label_cpu.setText(f"{psutil.cpu_percent():5} %")
 
         virtual_memory = psutil.virtual_memory()
-        self.ui.label_memory.setText(f"MEM: {virtual_memory.used / (1024 * 1024):.2f}/{virtual_memory.total / (1024 * 1024):.2f} MB")
+        self.ui.label_memory.setText(f"{virtual_memory.percent:5} %")
 
         self.update_debit()
 
