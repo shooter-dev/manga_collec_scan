@@ -15,6 +15,10 @@ class UiBarStatus(InterfaceWidget):
 
     def create_widgets(self, main_form: QWidget) -> Any:
         self.label_heure = QLabel(main_form)
+        self.label_cpu = QLabel(main_form)
+        self.label_memory = QLabel(main_form)
+        self.label_bytes_send = QLabel(main_form)
+        self.label_bytes_rece = QLabel(main_form)
         self.title_app = QLabel(main_form)
         self.title_app.setObjectName("title_app")
         self.spacer = QSpacerItem(24,24,QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -23,7 +27,15 @@ class UiBarStatus(InterfaceWidget):
 
     def modify_widgets(self, main_form: QWidget) -> Any:
         self.label_heure.setFont(FONT_16)
-        self.label_heure.setText("00:00")
+        self.label_heure.setText(" 00:00 ")
+        self.label_cpu.setFont(FONT_16)
+        self.label_cpu.setText("CPU --- % ")
+        self.label_memory.setFont(FONT_16)
+        self.label_memory.setText("MEM -- MB ")
+        self.label_bytes_send.setFont(FONT_16)
+        self.label_bytes_send.setText("Send -- MB ")
+        self.label_bytes_rece.setFont(FONT_16)
+        self.label_bytes_rece.setText("Rece -- MB ")
 
         size_btn = QSize(30, 30)
         self.button_close.setMinimumSize(size_btn)
@@ -39,6 +51,10 @@ class UiBarStatus(InterfaceWidget):
         self.main_layout.addWidget(self.label_heure, 0, Qt.AlignLeft|Qt.AlignVCenter)
         self.main_layout.addWidget(self.title_app, 0, Qt.AlignHCenter|Qt.AlignVCenter)
         self.main_layout.addSpacerItem(self.spacer)
+        self.main_layout.addWidget(self.label_cpu, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.main_layout.addWidget(self.label_memory, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.main_layout.addWidget(self.label_bytes_rece, 0, Qt.AlignRight|Qt.AlignVCenter)
+        self.main_layout.addWidget(self.label_bytes_send, 0, Qt.AlignRight|Qt.AlignVCenter)
         self.main_layout.addWidget(self.button_close, 0, Qt.AlignRight|Qt.AlignVCenter)
 
     def setup_connections(self) -> Any:
