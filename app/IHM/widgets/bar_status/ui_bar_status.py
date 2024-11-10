@@ -31,16 +31,16 @@ class UiBarStatus(InterfaceWidget):
         self.button_close = QPushButton(self.title_app)
 
     def modify_widgets(self, main_form: QWidget) -> Any:
-        self.label_heure.setFont(FONT_16)
+        self.label_heure.setFont(FONT_12)
         self.label_heure.setText(" 00:00 ")
 
-        self.label_cpu.setFont(FONT_16)
+        self.label_cpu.setFont(FONT_12)
         self.label_cpu.setText("CPU --- % ")
         self.image_cpu.setPixmap(QPixmap(RESOURCE_CPU))
         self.image_cpu.setScaledContents(True)
         self.image_cpu.setFixedSize(QSize(24,24))
 
-        self.label_memory.setFont(FONT_16)
+        self.label_memory.setFont(FONT_12)
         self.label_memory.setText("MEM -- MB ")
 
         self.label_bytes_send.setFont(FONT_12)
