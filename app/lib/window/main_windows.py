@@ -22,7 +22,7 @@ class MainWindow(QMainWindow):
 
         self.add_pages()
 
-        self.call_page('home')
+        self.call_page('news')
 
     def add_pages(self):
         self.add_page("home", HomePage)

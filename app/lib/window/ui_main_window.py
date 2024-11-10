@@ -24,6 +24,7 @@ class UiMainWindow(QObject):
         win.resize(win.dim)
         win.setMinimumSize(win.dim)
         win.setMaximumSize(win.dim)
+        win.setStyleSheet(U""" background-color: #FFF;   /* Couleur de fond */""")
         win.setWindowTitle('PyQt5 GUI MangaCollecScan')
 
     def create_widgets(self, win):
