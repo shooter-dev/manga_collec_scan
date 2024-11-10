@@ -35,10 +35,10 @@ class BarStatusWidget(QWidget):
         self.ui.label_heure.setText(current_time)
 
     def update_info(self):
-        self.ui.label_cpu.setText(f" CPU: {psutil.cpu_percent()}% ")
+        self.ui.label_cpu.setText(f"CPU: {psutil.cpu_percent()}%")
 
         virtual_memory = psutil.virtual_memory()
-        self.ui.label_memory.setText(f" MEM: {virtual_memory.used / (1024 * 1024):.2f}/{virtual_memory.total / (1024 * 1024):.2f} MB ")
+        self.ui.label_memory.setText(f"MEM: {virtual_memory.used / (1024 * 1024):.2f}/{virtual_memory.total / (1024 * 1024):.2f} MB")
 
         self.update_debit()
 
@@ -48,6 +48,6 @@ class BarStatusWidget(QWidget):
         bytes_recv_per_sec = (net_io.bytes_recv - self.prev_bytes_recv) / 1024  # en KB
         self.prev_bytes_sent = net_io.bytes_sent
         self.prev_bytes_recv = net_io.bytes_recv
-        self.ui.label_bytes_send.setText(f"{bytes_sent_per_sec:.2f} KB/s ")
-        self.ui.label_bytes_rece.setText(f"{bytes_recv_per_sec:.2f} KB/s ")
+        self.ui.label_bytes_send.setText(f"{bytes_sent_per_sec:.2f} KB/s")
+        self.ui.label_bytes_rece.setText(f"{bytes_recv_per_sec:.2f} KB/s")
 

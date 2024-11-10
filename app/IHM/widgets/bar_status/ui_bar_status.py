@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QSpacerItem, QSizePolicy, QApplication, QMainWindow
 
 from app.const import FONT_18, FONT_16, RESOURCE_CPU, RESOURCE_HOME, RESOURCE_PLANNING, RESOURCE_BYTES_SEND, \
-    RESOURCE_BYTES_RECE
+    RESOURCE_BYTES_RECE, FONT_12
 from app.lib.interface_widget import InterfaceWidget
 
 
@@ -43,13 +43,13 @@ class UiBarStatus(InterfaceWidget):
         self.label_memory.setFont(FONT_16)
         self.label_memory.setText("MEM -- MB ")
 
-        self.label_bytes_send.setFont(FONT_16)
+        self.label_bytes_send.setFont(FONT_12)
         self.label_bytes_send.setText("Send -- MB ")
         self.image_bytes_send.setPixmap(QPixmap(RESOURCE_BYTES_SEND))
         self.image_bytes_send.setScaledContents(True)
         self.image_bytes_send.setFixedSize(QSize(24,24))
 
-        self.label_bytes_rece.setFont(FONT_16)
+        self.label_bytes_rece.setFont(FONT_12)
         self.label_bytes_rece.setText("Rece -- MB ")
         self.image_bytes_rece.setPixmap(QPixmap(RESOURCE_BYTES_RECE))
         self.image_bytes_rece.setScaledContents(True)
@@ -64,6 +64,7 @@ class UiBarStatus(InterfaceWidget):
 
     def create_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.main_layout.setSpacing(2)
 
     def widgets_to_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.addWidget(self.label_heure, 0, Qt.AlignLeft|Qt.AlignVCenter)
