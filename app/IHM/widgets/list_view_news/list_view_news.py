@@ -39,6 +39,11 @@ class ListViewNews(QListWidget):
             list_widget_item.setSizeHint(item.size())
             self.setItemWidget(list_widget_item, item)
 
+    def touchEvent(self, event):
+        # Traitez l'événement tactile ici
+        print(f"Touch event detected ({event})")
+        event.accept()  # Empêche la propagation pour éviter le curseur inconnu
+
     @property
     def list_items(self) -> List[NewsItemModel]:
         return self.list_item_news
