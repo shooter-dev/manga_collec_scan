@@ -1,61 +1,60 @@
-# importing libraries
-from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QApplication, QComboBox, QWidget, QVBoxLayout
+from PyQt5.QtCore import Qt, QEvent, QPoint
 import sys
 
+class SwipeComboBox(QComboBox):
+    def __init__(self):
+        super().__init__()
+        self.setAttribute(Qt.WA_AcceptTouchEvents)
+        self.start_pos = None  # Pour stocker la position de départ du glissement
 
-class Window(QMainWindow):
+    def touchEvent(self, event):
+        if event.type() == QEvent.TouchBegin:
+            # Enregistrer la position de départ du glissement
+            self.start_pos = event.touchPoints()[0].pos()
+        elif event.type() == QEvent.TouchEnd and self.start_pos is not None:
+            # Obtenir la position de fin du glissement
+            end_pos = event.touchPoints()[0].pos()
+            self.handleSwipe(end_pos)
+        return super().touchEvent(event)
 
-	def __init__(self):
-		super().__init__()
+    def handleSwipe(self, end_pos):
+        # Calculer la différence entre la position de départ et la position de fin
+        delta_y = end_pos.y() - self.start_pos.y()
 
-		# setting title
-		self.setWindowTitle("Python ")
+        # Seuil pour déterminer si le mouvement est un glissement
+        swipe_threshold = 30
 
-		# setting geometry
-		self.setGeometry(100, 100, 600, 400)
+        if delta_y > swipe_threshold:
+            # Glissement vers le bas - passer à l'élément suivant
+            self.setCurrentIndex((self.currentIndex() + 1) % self.count())
+        elif delta_y < -swipe_threshold:
+            # Glissement vers le haut - passer à l'élément précédent
+            self.setCurrentIndex((self.currentIndex() - 1) % self.count())
 
-		# calling method
-		self.UiComponents()
+        # Réinitialiser la position de départ
+        self.start_pos = None
 
-		# showing all the widgets
-		self.show()
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("QComboBox avec navigation par glissement")
 
-	# method for widgets
-	def UiComponents(self):
+        # Layout principal
+        layout = QVBoxLayout()
 
-		# creating a combo box widget
-		self.combo_box = QComboBox(self)
+        # Créer une instance de SwipeComboBox
+        combo_box = SwipeComboBox()
+        combo_box.addItems(["Option 1", "Option 2", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 4", "Option 5"])
 
-		# setting geometry of combo box
-		self.combo_box.setGeometry(200, 150, 150, 30)
+        # Ajouter le combo box au layout
+        layout.addWidget(combo_box)
 
-		# geek list
-		geek_list = ["Sayian", "Super Sayian", "Super Sayian 2", "Super Sayian B"]
+        # Configurer la fenêtre principale
+        self.setLayout(layout)
 
-		# making it editable
-		self.combo_box.setEditable(True)
-
-		# adding list of items to combo box
-		self.combo_box.addItems(geek_list)
-
-		# getting the line edit of combo box
-		line_edit = self.combo_box.lineEdit()
-
-		# setting line edit alignment to the center
-		line_edit.setAlignment(Qt.AlignRight)
-
-		# setting line edit to read only
-		line_edit.setReadOnly(True)
-
-
-# create pyqt5 app
-App = QApplication(sys.argv)
-
-# create the instance of our Window
-window = Window()
-
-# start the app
-sys.exit(App.exec())
+# Application principale
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+sys.exit(app.exec_())
