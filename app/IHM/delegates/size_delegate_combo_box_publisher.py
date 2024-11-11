@@ -8,7 +8,6 @@ from app.const import FONT_17
 class SizeDelegateComboBoxPublisher(QStyledItemDelegate):
     def __init__(self, parent=None):
         QStyledItemDelegate.__init__(self, parent)
-        self.font_size = 16  # Taille de la police pour les éléments
 
     def paint(self, painter, option, index):
         # Personnalisation de l'élément de la liste
@@ -17,7 +16,7 @@ class SizeDelegateComboBoxPublisher(QStyledItemDelegate):
 
         # Couleur d'arrière-plan personnalisée
         if option.state & QStyle.State_Selected:
-            painter.fillRect(option.rect, QColor(QRgba64.fromRgba(0,0,0,1)))  # Couleur de l'élément sélectionné
+            painter.fillRect(option.rect, QColor(QRgba64.fromRgba(0,5,0,1)))  # Couleur de l'élément sélectionné
         else:
             painter.fillRect(option.rect, QColor("#FFFFFF"))  # Couleur de l'élément non sélectionné
 
