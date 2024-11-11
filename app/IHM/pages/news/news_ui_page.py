@@ -1,8 +1,9 @@
 from typing import Any
 
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import QSize, Qt, QPoint
 from PyQt5.QtWidgets import QWidget, QLabel, QSpacerItem, QSizePolicy
 
+from app.IHM.widgets.list_view_news.list_view_news import ListViewNews
 from app.IHM.widgets.news_header.news_header import NewsHeader
 from app.lib.interface_page import InterfacePage
 from app.lib.interface_widget import InterfaceWidget
@@ -11,23 +12,24 @@ from app.lib.interface_widget import InterfaceWidget
 class UiNewsPage(InterfaceWidget):
 
     def init(self, main_form: QWidget):
-        pass
+        main_form.setStyleSheet("background-color: rgb(20, 255, 255);")
 
     def create_widgets(self, main_form: QWidget) -> Any:
         self.header: NewsHeader = NewsHeader(self)
-        #self.item_news = ViewListItemNewsWidget(self)
-        self.item_news = QWidget(self)
+        self.list_view_news = ListViewNews(self)
 
     def modify_widgets(self, main_form: QWidget) -> Any:
         self.header.setFixedSize(QSize(720-88,51))
-        self.item_news.setFixedSize(QSize(720-78,1000))
+        self.list_view_news.resize(QSize(720-88, 1280-30-51))
+        self.list_view_news.setStyleSheet("background-color: rgb(20, 255, 20);")
 
     def create_layouts(self, main_form: QWidget) -> Any:
-        pass
+        self.main_layout.setContentsMargins(0,0,0,0)
+        self.main_layout.setSpacing(0)
 
     def widgets_to_layouts(self, main_form: QWidget) -> Any:
-        self.main_layout.addWidget(self.header,0 , Qt.AlignTop)
-        self.main_layout.addWidget(self.item_news)
+        self.main_layout.addWidget(self.header, 0, Qt.AlignTop)
+        self.main_layout.addWidget(self.list_view_news, 0, Qt.AlignBottom|Qt.AlignLeft)
 
     def setup_connections(self) -> Any:
         pass

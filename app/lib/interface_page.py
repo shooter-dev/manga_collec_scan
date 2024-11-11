@@ -9,7 +9,6 @@ class InterfacePage(QWidget):
     """
     Page interface de base pour toutes les pages
     """
-    main_layout: QBoxLayout
 
     def __init__(self, parent: QWidget = None):
         super().__init__(parent)
@@ -18,7 +17,7 @@ class InterfacePage(QWidget):
         self.auto_instance_ui()
 
         self.ui = self.ui_class()  # Créer l'instance de la classe UI
-        self.ui.setup_ui(self, self.main_layout)  # Appliquer l'UI sur la page
+        self.ui.setup_ui(self)  # Appliquer l'UI sur la page
 
     def auto_instance_ui(self):
         page_name = self.__class__.__name__  # Exemple : HomePage -> HomePage

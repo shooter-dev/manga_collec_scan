@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QApplication
 
-from app.lib.window.main_windows import MainWindow
+from app.IHM.pages.window.main_windows import MainWindow
 
 
 def main():

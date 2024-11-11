@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 from app.IHM.pages.home.home_page import HomePage
 from app.IHM.pages.news.news_page import NewsPage
 from app.lib.interface_page import InterfacePage
-from app.lib.window.ui_main_window import UiMainWindow
+from app.IHM.pages.window.ui_main_window import UiMainWindow
 
 
 class MainWindow(QMainWindow):
