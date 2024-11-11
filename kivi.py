@@ -25,7 +25,7 @@ kv = '''
             size: self.size
     size_hint_y: None
     height: 40
-    padding: 10
+    padding: [10, 10]  # Mettre à jour le remplissage avec une liste ou un tuple
     color: (1, 1, 1, 1)
 
 <CustomRecycleView>:
