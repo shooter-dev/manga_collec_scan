@@ -12,7 +12,7 @@ from app.lib.interface_widget import InterfaceWidget
 class UiNewsPage(InterfaceWidget):
 
     def init(self, main_form: QWidget):
-        main_form.setStyleSheet("background-color: rgb(20, 255, 255);")
+        pass
 
     def create_widgets(self, main_form: QWidget) -> Any:
         self.header = NewsHeader(self)
@@ -21,7 +21,7 @@ class UiNewsPage(InterfaceWidget):
     def modify_widgets(self, main_form: QWidget) -> Any:
         self.header.setFixedSize(QSize(720-88,51))
         self.list_view_news.resize(QSize(720-88, 1280-30-51))
-        self.list_view_news.setStyleSheet("background-color: rgb(20, 255, 20);")
+        self.list_view_news.setAttribute(Qt.WA_AcceptTouchEvents, True)
 
     def create_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.setContentsMargins(0,0,0,0)

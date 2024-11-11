@@ -43,7 +43,6 @@ class UiMainWindow(QObject):
         self.bar.setFixedSize(size_bar)
         self.menu.setFixedSize(size_menu)
         self.pages_stack.setFixedSize(size_pages)
-        self.pages_stack.setStyleSheet(U""" background-color: #F00;""")
 
     def create_layouts(self, layout):
         self.main_layout: QBoxLayout = layout(self.widget)
