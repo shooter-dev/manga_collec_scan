@@ -15,7 +15,7 @@ class UiNewsPage(InterfaceWidget):
         main_form.setStyleSheet("background-color: rgb(20, 255, 255);")
 
     def create_widgets(self, main_form: QWidget) -> Any:
-        self.header: NewsHeader = NewsHeader(self)
+        self.header = NewsHeader(self)
         self.list_view_news = ListViewNews(self)
 
     def modify_widgets(self, main_form: QWidget) -> Any:
@@ -29,7 +29,7 @@ class UiNewsPage(InterfaceWidget):
 
     def widgets_to_layouts(self, main_form: QWidget) -> Any:
         self.main_layout.addWidget(self.header, 0, Qt.AlignTop)
-        self.main_layout.addWidget(self.list_view_news, 0, Qt.AlignBottom|Qt.AlignLeft)
+        self.main_layout.addWidget(self.list_view_news, 0, Qt.AlignBottom)
 
     def setup_connections(self) -> Any:
         pass

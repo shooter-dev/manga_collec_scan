@@ -2,14 +2,14 @@ from abc import abstractmethod
 from typing import Any
 
 from PyQt5.QtCore import QMetaObject
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QHBoxLayout, QVBoxLayout
 
 
 class InterfaceWidget(QWidget):
     """
     Page interface
     """
-    def setup_ui(self, window: QWidget, layout=QHBoxLayout) -> Any:
+    def setup_ui(self, window: QWidget, layout=QVBoxLayout) -> Any:
 
         self.main_layout: QBoxLayout = layout(window)
         self.main_layout.setSpacing(0)
