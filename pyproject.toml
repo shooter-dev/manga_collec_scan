@@ -17,6 +17,7 @@ pillow = "^10.4.0"
 psutil = "^6.1.0"
 screen-brightness-control = "^0.24.0"
 brightness = "^0.0.1"
+kivy = "^2.3.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
