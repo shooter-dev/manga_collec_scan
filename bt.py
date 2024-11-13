@@ -1,88 +1,102 @@
 import sys
-import asyncio
-from PyQt5 import QtWidgets, QtCore
-from bleak import BleakScanner, BleakClient
-
-class BluetoothWorker(QtCore.QThread):
-    devices_found = QtCore.pyqtSignal(list)
-
-    async def scan(self):
-        """ Fonction asynchrone pour scanner les périphériques Bluetooth. """
-        devices = await BleakScanner.discover()
-        self.devices_found.emit(devices)
-
-    def run(self):
-        """ Exécution de la boucle événementielle asyncio pour le scan. """
-        asyncio.run(self.scan())
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QListWidget, QLabel, QComboBox
+from PyQt5.QtBluetooth import QBluetoothDeviceDiscoveryAgent, QBluetoothSocket, QBluetoothAddress, QBluetoothDeviceInfo
 
 
-class BluetoothDashboard(QtWidgets.QWidget):
+class BluetoothApp(QWidget):
     def __init__(self):
         super().__init__()
 
-        # Configurer l'interface utilisateur
-        self.setWindowTitle("Tableau de Bord Bluetooth")
-        self.resize(500, 300)
+        self.setWindowTitle("Recherche Bluetooth")
+        self.setGeometry(100, 100, 600, 400)
 
-        # Layout principal
-        self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout = QVBoxLayout()
 
-        # Bouton pour scanner les périphériques
-        self.scan_button = QtWidgets.QPushButton("Scanner les périphériques")
-        self.scan_button.clicked.connect(self.scan_devices)
-        self.layout.addWidget(self.scan_button)
+        self.info_label = QLabel("Sélectionnez un périphérique Bluetooth", self)
+        self.layout.addWidget(self.info_label)
 
-        # Liste pour afficher les périphériques trouvés
-        self.devices_list = QtWidgets.QListWidget()
-        self.layout.addWidget(self.devices_list)
+        self.device_list = QListWidget(self)
+        self.layout.addWidget(self.device_list)
 
-        # Bouton pour se connecter
-        self.connect_button = QtWidgets.QPushButton("Se connecter")
-        self.connect_button.clicked.connect(self.connect_to_device)
+        self.connect_button = QPushButton("Se connecter", self)
+        self.connect_button.setEnabled(False)
         self.layout.addWidget(self.connect_button)
 
-        # Gestionnaire de périphériques Bluetooth
-        self.devices = []
-        self.bluetooth_worker = BluetoothWorker()
-        self.bluetooth_worker.devices_found.connect(self.display_devices)
+        self.quit_button = QPushButton("Quitter", self)
+        self.layout.addWidget(self.quit_button)
 
-    def scan_devices(self):
-        """ Démarrer le scan Bluetooth avec QThread. """
-        self.devices_list.clear()
-        self.bluetooth_worker.start()
+        self.device_selector = QComboBox(self)
+        self.layout.addWidget(self.device_selector)
 
-    def display_devices(self, devices):
-        """ Affiche les périphériques trouvés dans la liste. """
-        self.devices = devices
-        for device in devices:
-            self.devices_list.addItem(f"{device.name} - {device.address}")
+        # Initialisation de la recherche Bluetooth
+        self.device_discovery = QBluetoothDeviceDiscoveryAgent()
+        self.device_discovery.deviceDiscovered.connect(self.on_device_discovered)
+        self.device_discovery.finished.connect(self.on_discovery_finished)
 
-    async def connect_to_device_async(self, address):
-        """ Fonction asynchrone pour se connecter à un périphérique Bluetooth. """
-        try:
-            async with BleakClient(address) as client:
-                if await client.is_connected():
-                    QtWidgets.QMessageBox.information(self, "Connexion réussie", f"Connecté à {address}")
-        except Exception as e:
-            QtWidgets.QMessageBox.critical(self, "Erreur de connexion", str(e))
+        self.connect_button.clicked.connect(self.connect_to_device)
+        self.quit_button.clicked.connect(self.close)
+
+        self.setLayout(self.layout)
+
+        self.device_info = None  # Pour stocker l'information du périphérique sélectionné
+
+    def start_device_search(self):
+        """Démarre la recherche des périphériques Bluetooth."""
+        self.device_list.clear()
+        self.device_selector.clear()
+        self.device_discovery.start()
+
+    def on_device_discovered(self, device_info):
+        """Appelé lors de la découverte d'un périphérique."""
+        self.device_list.addItem(device_info.name())
+        self.device_selector.addItem(device_info.name())
+        self.device_info = device_info  # On garde la dernière information du périphérique
+
+    def on_discovery_finished(self):
+        """Appelé une fois la recherche terminée."""
+        self.info_label.setText(f"{len(self.device_list.items())} périphériques trouvés")
+        if self.device_list.count() > 0:
+            self.connect_button.setEnabled(True)
 
     def connect_to_device(self):
-        """ Se connecter au périphérique sélectionné dans la liste. """
-        selected_item = self.devices_list.currentItem()
-        if selected_item:
-            selected_device_info = selected_item.text().split(" - ")
-            if len(selected_device_info) == 2:
-                address = selected_device_info[1]
-                asyncio.create_task(self.connect_to_device_async(address))
-        else:
-            QtWidgets.QMessageBox.warning(self, "Aucun périphérique sélectionné", "Veuillez sélectionner un périphérique pour vous connecter.")
+        """Se connecter au périphérique sélectionné."""
+        device_name = self.device_selector.currentText()
+        if not device_name:
+            return
 
+        # Recherche de l'adresse Bluetooth en fonction du nom
+        device_address = None
+        for i in range(self.device_list.count()):
+            if self.device_list.item(i).text() == device_name:
+                device_info = self.device_discovery.discoveredDevices()[i]
+                device_address = device_info.address()
+                break
 
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    dashboard = BluetoothDashboard()
-    dashboard.show()
-    sys.exit(app.exec_())
+        if device_address:
+            self.bluetooth_socket = QBluetoothSocket(QBluetoothSocket.RfcommSocket)
+            self.bluetooth_socket.connectToService(QBluetoothAddress(device_address), 1)  # Port 1 par défaut
+            self.bluetooth_socket.readyRead.connect(self.on_data_received)
+            self.bluetooth_socket.error.connect(self.on_connection_error)
+            self.info_label.setText(f"Connexion à {device_name} en cours...")
+
+    def on_data_received(self):
+        """Gestion des données reçues après la connexion."""
+        data = self.bluetooth_socket.readAll()
+        print(f"Reçu: {data.data().decode()}")
+
+    def on_connection_error(self):
+        """Gérer les erreurs de connexion."""
+        self.info_label.setText("Erreur de connexion.")
+        print("Erreur de connexion.")
+
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+
+    window = BluetoothApp()
+    window.show()
+
+    window.start_device_search()  # Démarrer la recherche des périphériques Bluetooth dès le début
+
+    sys.exit(app.exec_())

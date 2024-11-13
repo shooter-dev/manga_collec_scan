@@ -16,7 +16,7 @@ pillow = "^10.4.0"
 #mangacollect = {path = "/Users/shooterdev/Labs/PycharmProjects/mangacollect"}
 psutil = "^6.1.0"
 kivy = "^2.3.0"
-bleak = "^0.22.3"
+qasync = "^0.27.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
