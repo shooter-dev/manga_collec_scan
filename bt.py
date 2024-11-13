@@ -3,6 +3,19 @@ import asyncio
 from PyQt5 import QtWidgets, QtCore
 from bleak import BleakScanner, BleakClient
 
+class BluetoothWorker(QtCore.QThread):
+    devices_found = QtCore.pyqtSignal(list)
+
+    async def scan(self):
+        """ Fonction asynchrone pour scanner les périphériques Bluetooth. """
+        devices = await BleakScanner.discover()
+        self.devices_found.emit(devices)
+
+    def run(self):
+        """ Exécution de la boucle événementielle asyncio pour le scan. """
+        asyncio.run(self.scan())
+
+
 class BluetoothDashboard(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -28,20 +41,21 @@ class BluetoothDashboard(QtWidgets.QWidget):
         self.connect_button.clicked.connect(self.connect_to_device)
         self.layout.addWidget(self.connect_button)
 
-        # Gestionnaire de périphérique Bluetooth
+        # Gestionnaire de périphériques Bluetooth
         self.devices = []
-
-    async def scan_devices_async(self):
-        """ Fonction asynchrone pour scanner les périphériques Bluetooth. """
-        self.devices_list.clear()
-        self.devices = await BleakScanner.discover()
-        for device in self.devices:
-            self.devices_list.addItem(f"{device.name} - {device.address}")
+        self.bluetooth_worker = BluetoothWorker()
+        self.bluetooth_worker.devices_found.connect(self.display_devices)
 
     def scan_devices(self):
-        """ Démarrer le scan Bluetooth. """
-        loop = asyncio.get_event_loop()
-        loop.create_task(self.scan_devices_async())
+        """ Démarrer le scan Bluetooth avec QThread. """
+        self.devices_list.clear()
+        self.bluetooth_worker.start()
+
+    def display_devices(self, devices):
+        """ Affiche les périphériques trouvés dans la liste. """
+        self.devices = devices
+        for device in devices:
+            self.devices_list.addItem(f"{device.name} - {device.address}")
 
     async def connect_to_device_async(self, address):
         """ Fonction asynchrone pour se connecter à un périphérique Bluetooth. """
@@ -59,10 +73,10 @@ class BluetoothDashboard(QtWidgets.QWidget):
             selected_device_info = selected_item.text().split(" - ")
             if len(selected_device_info) == 2:
                 address = selected_device_info[1]
-                loop = asyncio.get_event_loop()
-                loop.create_task(self.connect_to_device_async(address))
+                asyncio.create_task(self.connect_to_device_async(address))
         else:
             QtWidgets.QMessageBox.warning(self, "Aucun périphérique sélectionné", "Veuillez sélectionner un périphérique pour vous connecter.")
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
