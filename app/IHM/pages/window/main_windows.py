@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 
 from app.IHM.pages.home.home_page import HomePage
 from app.IHM.pages.news.news_page import NewsPage
+from app.lib.code_barre_scan import CodeBarreScan
 from app.lib.interface_page import InterfacePage
 from app.IHM.pages.window.ui_main_window import UiMainWindow
 
@@ -23,6 +24,12 @@ class MainWindow(QMainWindow):
         self.add_pages()
 
         self.call_page('news')
+
+        self.scanner = CodeBarreScan()
+        self.installEventFilter(self.scanner)
+
+        self.scanner.scan_completed.connect(self.display_result)
+
 
     def add_pages(self):
         self.add_page("home", HomePage)
@@ -44,6 +51,11 @@ class MainWindow(QMainWindow):
             page.page_update()
 
             print(f"call {name} | {page}")
+
+    def display_result(self, result):
+        # Afficher le résultat du scan
+        #self.result_label.setText(result)
+        print(result)
 
     def exit_app(self):
         print("Nettoyage avant de quitter...")

@@ -8,16 +8,15 @@ readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<3.14"
 python-dotenv = "^1.0.1"
 pyqt5 = "^5.15.9"
 requests = "^2.32.3"
 pillow = "^10.4.0"
 #mangacollect = {path = "/Users/shooterdev/Labs/PycharmProjects/mangacollect"}
 psutil = "^6.1.0"
-screen-brightness-control = "^0.24.0"
-brightness = "^0.0.1"
 kivy = "^2.3.0"
+bleak = "^0.22.3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.3"
