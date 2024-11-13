@@ -1,68 +1,70 @@
 import sys
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QListWidget, QLabel, QComboBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QListWidget, QPushButton, QWidget
 from PyQt5.QtBluetooth import QBluetoothDeviceDiscoveryAgent, QBluetoothSocket, QBluetoothAddress, QBluetoothDeviceInfo
 
 
-class BluetoothApp(QWidget):
+class BluetoothApp(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Recherche Bluetooth")
-        self.setGeometry(100, 100, 600, 400)
+        # Initialiser les variables
+        self.found_devices = []  # Liste pour stocker les périphériques trouvés
+        self.bluetooth_socket = None
 
-        self.layout = QVBoxLayout()
+        # Configuration de l'interface
+        self.initUI()
 
-        self.info_label = QLabel("Sélectionnez un périphérique Bluetooth", self)
-        self.layout.addWidget(self.info_label)
+        # Configuration de la découverte Bluetooth
+        self.discovery_agent = QBluetoothDeviceDiscoveryAgent()
+        self.discovery_agent.deviceDiscovered.connect(self.on_device_discovered)
+        self.discovery_agent.finished.connect(self.on_discovery_finished)
 
-        self.device_list = QListWidget(self)
-        self.layout.addWidget(self.device_list)
+        # Démarrer la découverte des périphériques Bluetooth
+        self.discovery_agent.start()
 
+    def initUI(self):
+        """Initialisation de l'interface graphique."""
+        self.setWindowTitle("Bluetooth Scanner")
+        self.setGeometry(100, 100, 400, 300)
+
+        # Création du widget principal
+        central_widget = QWidget(self)
+        self.setCentralWidget(central_widget)
+
+        # Création du layout vertical
+        layout = QVBoxLayout()
+
+        # Liste des périphériques Bluetooth
+        self.device_list = QListWidget()
+        layout.addWidget(self.device_list)
+
+        # Label d'information
+        self.info_label = QLabel("Recherche des périphériques Bluetooth...", self)
+        layout.addWidget(self.info_label)
+
+        # Bouton de connexion
         self.connect_button = QPushButton("Se connecter", self)
-        self.connect_button.setEnabled(False)
-        self.layout.addWidget(self.connect_button)
-
-        self.quit_button = QPushButton("Quitter", self)
-        self.layout.addWidget(self.quit_button)
-
-        self.device_selector = QComboBox(self)
-        self.layout.addWidget(self.device_selector)
-
-        # Initialisation de la recherche Bluetooth
-        self.device_discovery = QBluetoothDeviceDiscoveryAgent()
-        self.device_discovery.deviceDiscovered.connect(self.on_device_discovered)
-        self.device_discovery.finished.connect(self.on_discovery_finished)
-
         self.connect_button.clicked.connect(self.connect_to_device)
-        self.quit_button.clicked.connect(self.close)
+        layout.addWidget(self.connect_button)
 
-        self.setLayout(self.layout)
+        # Ajouter le layout au widget principal
+        central_widget.setLayout(layout)
 
-        self.device_info = None  # Pour stocker l'information du périphérique sélectionné
-
-    def start_device_search(self):
-        """Démarre la recherche des périphériques Bluetooth."""
-        self.device_list.clear()
-        self.device_selector.clear()
-        self.device_discovery.start()
-
-    def on_device_discovered(self, device_info):
-        """Appelé lors de la découverte d'un périphérique."""
+    def on_device_discovered(self, device_info: QBluetoothDeviceInfo):
+        """Méthode appelée lors de la découverte d'un périphérique Bluetooth."""
+        # Ajouter chaque périphérique découvert à la liste
         self.device_list.addItem(device_info.name())
-        self.device_selector.addItem(device_info.name())
-        self.device_info = device_info  # On garde la dernière information du périphérique
 
     def on_discovery_finished(self):
-        """Appelé une fois la recherche terminée."""
-        self.info_label.setText(f"{self.device_list.count()} périphériques trouvés")
-        if self.device_list.count() > 0:
-            self.connect_button.setEnabled(True)
+        """Méthode appelée lorsque la découverte des périphériques est terminée."""
+        self.info_label.setText(f"{self.device_list.count()} périphériques trouvés.")
 
     def connect_to_device(self):
+        """Se connecter au périphérique sélectionné."""
         selected_device_name = self.device_list.currentItem().text()
 
-    # Trouver l'adresse Bluetooth du périphérique sélectionné
+        # Trouver l'adresse Bluetooth du périphérique sélectionné
         selected_device = None
         for device in self.found_devices:
             if device.name() == selected_device_name:
@@ -78,27 +80,25 @@ class BluetoothApp(QWidget):
             # Se connecter au périphérique via RFCOMM
             self.bluetooth_socket.connectToService(QBluetoothAddress(device_address), 1)  # Port 1 par défaut
 
+            # Connecter les signaux aux slots
             self.bluetooth_socket.readyRead.connect(self.on_data_received)
             self.bluetooth_socket.error.connect(self.on_connection_error)
+
             self.info_label.setText(f"Connexion à {selected_device_name}...")
 
     def on_data_received(self):
-        """Gestion des données reçues après la connexion."""
+        """Méthode appelée lorsqu'il y a des données reçues sur le socket."""
         data = self.bluetooth_socket.readAll()
-        print(f"Reçu: {data.data().decode()}")
+        self.info_label.setText(f"Données reçues : {data}")
 
     def on_connection_error(self):
-        """Gérer les erreurs de connexion."""
-        self.info_label.setText("Erreur de connexion.")
-        print("Erreur de connexion.")
+        """Méthode appelée en cas d'erreur lors de la connexion Bluetooth."""
+        error = self.bluetooth_socket.errorString()
+        self.info_label.setText(f"Erreur de connexion : {error}")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-
-    window = BluetoothApp()
-    window.show()
-
-    window.start_device_search()  # Démarrer la recherche des périphériques Bluetooth dès le début
-
+    bt_app = BluetoothApp()
+    bt_app.show()
     sys.exit(app.exec_())
