@@ -60,25 +60,27 @@ class BluetoothApp(QWidget):
             self.connect_button.setEnabled(True)
 
     def connect_to_device(self):
-        """Se connecter au périphérique sélectionné."""
-        device_name = self.device_selector.currentText()
-        if not device_name:
-            return
+        selected_device_name = self.device_list.currentItem().text()
 
-        # Recherche de l'adresse Bluetooth en fonction du nom
-        device_address = None
-        for i in range(self.device_list.count()):
-            if self.device_list.item(i).text() == device_name:
-                device_info = self.device_discovery.discoveredDevices()[i]
-                device_address = device_info.address()
+    # Trouver l'adresse Bluetooth du périphérique sélectionné
+        selected_device = None
+        for device in self.found_devices:
+            if device.name() == selected_device_name:
+                selected_device = device
                 break
 
-        if device_address:
+        if selected_device:
+            device_address = selected_device.address()
+
+            # Créer un objet QBluetoothSocket pour la connexion RFCOMM
             self.bluetooth_socket = QBluetoothSocket(QBluetoothSocket.RfcommSocket)
+
+            # Se connecter au périphérique via RFCOMM
             self.bluetooth_socket.connectToService(QBluetoothAddress(device_address), 1)  # Port 1 par défaut
+
             self.bluetooth_socket.readyRead.connect(self.on_data_received)
             self.bluetooth_socket.error.connect(self.on_connection_error)
-            self.info_label.setText(f"Connexion à {device_name} en cours...")
+            self.info_label.setText(f"Connexion à {selected_device_name}...")
 
     def on_data_received(self):
         """Gestion des données reçues après la connexion."""
