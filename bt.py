@@ -55,7 +55,7 @@ class BluetoothApp(QWidget):
 
     def on_discovery_finished(self):
         """Appelé une fois la recherche terminée."""
-        self.info_label.setText(f"{len(self.device_list.items())} périphériques trouvés")
+        self.info_label.setText(f"{self.device_list.count()} périphériques trouvés")
         if self.device_list.count() > 0:
             self.connect_button.setEnabled(True)
 
