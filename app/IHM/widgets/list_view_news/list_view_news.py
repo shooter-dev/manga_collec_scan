@@ -1,6 +1,6 @@
 from typing import List
 
-from PyQt5.QtCore import QSize, Qt, QTimer
+from PyQt5.QtCore import QSize, Qt, QTimer, QEvent
 from PyQt5.QtWidgets import QListView, QWidget, QListWidget, QListWidgetItem, QAbstractItemView, QMessageBox
 
 from app.IHM.widgets.item_news.item_news_widget import ItemNewsWidget
@@ -59,27 +59,34 @@ class ListViewNews(QListWidget):
             list_widget_item.setData(Qt.UserRole, news_item)
             self.setItemWidget(list_widget_item, item)
 
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            # Démarrer le timer pour détecter un appui long
-            self.current_item = self.itemAt(event.pos())  # Obtenir l'élément sous le curseur
-            self.long_press_timer.start(600)  # Définir la durée pour un appui long (500 ms)
-        super().mousePressEvent(event)
+    def event(self, event):
+        if event.type() == QEvent.TouchBegin:
+            # Obtenir l'élément sous le point de contact
+            touch_point = event.touchPoints()[0].pos()
+            self.current_item = self.itemAt(touch_point)
 
-    def mouseReleaseEvent(self, event):
-        # Arrêter le timer si l'utilisateur relâche avant que le délai soit atteint
-        self.long_press_timer.stop()
-        super().mouseReleaseEvent(event)
+            # Démarrer le timer pour détecter un appui long
+            self.long_press_timer.start(500)  # 500 ms pour l'appui long
+            return True  # Indique que l'événement est traité
+
+        elif event.type() == QEvent.TouchEnd:
+            # Arrêter le timer si l'utilisateur relâche trop tôt
+            self.long_press_timer.stop()
+            self.current_item = None
+            return True
+
+        elif event.type() == QEvent.TouchCancel:
+            # Annuler l'appui long si l'événement tactile est annulé
+            self.long_press_timer.stop()
+            self.current_item = None
+            return True
+
+        return super().event(event)
 
     def on_long_press(self):
-        # Gestionnaire d'événement pour l'appui long
+        # Appelée si le timer d'appui long expire
         if self.current_item is not None:
             QMessageBox.information(self, "Appui Long", f"Appui long détecté sur : {self.current_item.text()}")
-
-    def touchEvent(self, event):
-        # Traitez l'événement tactile ici
-        print(f"Touch event detected ({event})")
-        event.accept()  # Empêche la propagation pour éviter le curseur inconnu
 
     @property
     def list_items(self) -> List[NewsItemModel]:
