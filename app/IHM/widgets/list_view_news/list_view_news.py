@@ -1,7 +1,7 @@
 from typing import List
 
-from PyQt5.QtCore import QSize, Qt
-from PyQt5.QtWidgets import QListView, QWidget, QListWidget, QListWidgetItem, QAbstractItemView
+from PyQt5.QtCore import QSize, Qt, QTimer
+from PyQt5.QtWidgets import QListView, QWidget, QListWidget, QListWidgetItem, QAbstractItemView, QMessageBox
 
 from app.IHM.widgets.item_news.item_news_widget import ItemNewsWidget
 from app.models.news_item_model import NewsItemModel
@@ -13,6 +13,13 @@ class ListViewNews(QListWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # Créer un QTimer pour l'appui long
+        self.long_press_timer = QTimer()
+        self.long_press_timer.setSingleShot(True)  # Déclenchement unique
+        self.long_press_timer.timeout.connect(self.on_long_press)  # Connecter au gestionnaire d'événement
+
+        self.current_item = None  # Suivre l'élément actuel pour l'appui long
 
         # self.ui = UiListViewNews()
         # self.ui.setup_ui(self)
@@ -31,7 +38,7 @@ class ListViewNews(QListWidget):
         self.setSelectionMode(QAbstractItemView.SingleSelection)
 
         self.itemClicked.connect(lambda item: print(f"Élément cliqué : {item.data(Qt.UserRole)}"))
-        self.itemPressed.connect(lambda item: print(f"Élément press : {item.data(Qt.UserRole).serie_name}"))
+        #self.itemPressed.connect(lambda item: print(f"Élément press : {item.data(Qt.UserRole).serie_name}"))
 
         self.setAttribute(Qt.WA_AcceptTouchEvents)
         self.setVerticalScrollMode(QListWidget.ScrollPerPixel)
@@ -52,6 +59,22 @@ class ListViewNews(QListWidget):
             list_widget_item.setData(Qt.UserRole, news_item)
             self.setItemWidget(list_widget_item, item)
 
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            # Démarrer le timer pour détecter un appui long
+            self.current_item = self.itemAt(event.pos())  # Obtenir l'élément sous le curseur
+            self.long_press_timer.start(600)  # Définir la durée pour un appui long (500 ms)
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        # Arrêter le timer si l'utilisateur relâche avant que le délai soit atteint
+        self.long_press_timer.stop()
+        super().mouseReleaseEvent(event)
+
+    def on_long_press(self):
+        # Gestionnaire d'événement pour l'appui long
+        if self.current_item is not None:
+            QMessageBox.information(self, "Appui Long", f"Appui long détecté sur : {self.current_item.text()}")
 
     def touchEvent(self, event):
         # Traitez l'événement tactile ici
