@@ -48,7 +48,7 @@ class MainWindow(QWidget):
         super().__init__()
 
         self.setWindowTitle("Téléchargement d'images avec ImageWidget")
-        self.setGeometry(100, 100, 600, 400)
+        self.setGeometry(0, 0, 720, 1280)
 
         # Créer un layout vertical pour les widgets ImageWidget
         layout = QVBoxLayout(self)
