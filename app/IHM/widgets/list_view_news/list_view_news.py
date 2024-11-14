@@ -35,7 +35,7 @@ class ListViewNews(QListWidget):
 
         self.setAttribute(Qt.WA_AcceptTouchEvents)
         self.setVerticalScrollMode(QListWidget.ScrollPerPixel)
-        self.verticalScrollBar().setSingleStep(10)
+        self.verticalScrollBar().setSingleStep(30)
 
         scroll_bar = self.verticalScrollBar()
         scroll_bar.setSingleStep(12)
