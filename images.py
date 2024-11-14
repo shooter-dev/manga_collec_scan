@@ -2,7 +2,7 @@ import sys
 import requests
 from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSize
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QScrollArea, QScrollBar
 
 
 class ImageDownloadThread(QThread):
@@ -40,7 +40,6 @@ class ImageWidget(QLabel):
         if pixmap.isNull():
             self.setText("Échec du téléchargement")
         else:
-            print("up")
             self.setPixmap(pixmap)
 
 
@@ -51,10 +50,14 @@ class MainWindow(QWidget):
         self.setWindowTitle("Téléchargement d'images avec ImageWidget")
         self.setGeometry(100, 100, 600, 400)
 
-        # Créer un layout
+        # Créer un layout vertical pour les widgets ImageWidget
         layout = QVBoxLayout(self)
 
-        # Ajouter plusieurs widgets ImageWidget avec différentes URLs
+        # Créer un conteneur de widget pour ajouter plusieurs ImageWidget
+        container_widget = QWidget()
+        container_layout = QVBoxLayout(container_widget)
+
+        # Liste des URLs d'images à télécharger
         urls = [
             "https://m.media-amazon.com/images/I/41w8Lk08tnL._SY642_.jpg",
             "https://api.mangacollec.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaWt4T1Rsa05HUTRNeTFqWVROaExUUXlZelF0WWpJNFl5MHlOalZqT0RZeE0yWTNaRE1HT2daRlZBPT0iLCJleHAiOm51bGwsInB1ciI6ImJsb2JfaWQifX0=--cd47f12184334c99194007966e01bb9fde69fe43/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFMMEFXa0M5QUU9IiwiZXhwIjpudWxsLCJwdXIiOiJ2YXJpYXRpb24ifX0=--f4740ce9863997714730d7d28982d4fbc8d883df/1104ae77-86bc-43f9-80d3-b14b314f8aad.jpg",
@@ -230,10 +233,20 @@ class MainWindow(QWidget):
             "https://m.media-amazon.com/images/I/51iP5R8HtHL._SY642_.jpg"
         ]
 
+        # Ajouter plusieurs widgets ImageWidget avec différentes URLs
         for url in urls:
             image_widget = ImageWidget(url)
-            image_widget.setFixedSize(QSize(100,100))
-            layout.addWidget(image_widget)
+            image_widget.setScaledContents(True)
+            image_widget.setFixedSize(QSize(150,150))
+            container_layout.addWidget(image_widget)
+
+        # Ajouter le container_widget dans la QScrollArea
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)  # Permet de redimensionner le contenu de la QScrollArea
+        scroll_area.setWidget(container_widget)  # Ajouter le widget contenant les images dans la QScrollArea
+
+        # Ajouter la QScrollArea dans le layout principal
+        layout.addWidget(scroll_area)
 
         self.setLayout(layout)
 
