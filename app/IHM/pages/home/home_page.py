@@ -10,7 +10,7 @@ class HomePage(InterfacePage):
     main_layout = QHBoxLayout
 
     def page_update(self) -> Any:
-        pass
+        print("Home Update Page")
 
 
 

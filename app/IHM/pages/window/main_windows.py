@@ -10,24 +10,23 @@ from app.lib.container import Container
 from app.lib.container_interface import ContainerInterface
 from app.lib.interface_page import InterfacePage
 from app.IHM.pages.window.ui_main_window import UiMainWindow
+from app.lib.route import Route
 from app.lib.router import Router
 
 
 class MainWindow(QMainWindow):
     dim: QSize
-    router: Router = {}
+    router: Router
 
-    def __init__(self, size: QSize, container: ContainerInterface):
+    def __init__(self, size: QSize, container: ContainerInterface, router: Router) -> None:
         super().__init__()
         print(f"Main: {self}")
         self.dim = size
-        container.set(Router, Router(self))
-        self.router = container.get(Router)
+        self.router = router
 
         self.ui = UiMainWindow()
         self.ui.setup_ui(window=self,layout=QVBoxLayout)
         self.router.add_stacked_widget(self.ui.pages_stack)
-        #self.ui.menu.add_router(self.__router)
 
         self.add_pages()
 
@@ -43,8 +42,8 @@ class MainWindow(QMainWindow):
 
 
     def add_pages(self):
-        self.router.add_page("home", HomePage)
-        self.router.add_page("news", NewsPage)
+        self.router.add_route(Route("home", HomePage))
+        self.router.add_route(Route("news", NewsPage))
 
     def on_scan_completed(self, message):
         """Affiche le message du scan (code ou erreur)"""

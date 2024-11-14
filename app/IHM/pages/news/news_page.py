@@ -11,8 +11,21 @@ from app.models.publisher import Publisher
 class NewsPage(InterfacePage):
     ui: UiNewsPage
 
-    def page_update(self) -> Any:
-        publishers = self.feature_publishers()
+    def page_update(self):
+        publishers: List[Publisher] = []
+        publishers_data = self._container.get('publishers')
+        for publisher in publishers_data:
+            print(publisher)
+            publishers.append(
+                Publisher(
+                    id=publisher['id'],
+                    title=publisher['title'],
+                    closed=publisher['closed'],
+                    editions_count=publisher['editions_count'],
+                    no_amazon=publisher['no_amazon']
+                )
+            )
+
 
         self.ui.header.add_publisher_to_combo_box(publishers)
 

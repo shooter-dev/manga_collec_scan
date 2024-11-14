@@ -1,0 +1,1 @@
+from app.services.mangacollec.mangacollec import MangaCollec

@@ -1,6 +1,6 @@
 import importlib
 from abc import ABC, abstractmethod, abstractproperty
-from typing import Any
+from typing import Any, List
 
 from PyQt5.QtWidgets import QWidget, QBoxLayout
 
@@ -32,12 +32,10 @@ class InterfacePage(QWidget):
         module_name = f"app.IHM.pages.{page_name.lower().replace('page', '')}.{page_name.lower().replace('page', '')}_ui_page"  # Exemple : app.IHM.pages.home.home_ui_page
         self.ui_class = self.import_class(module_name, ui_class_name)
 
-    def add_router(self,router: Router) -> None:
-        self._router = router
-
     @abstractmethod
     def page_update(self) -> Any:
-        """Méthode à implémenter dans les pages spécifiques pour la mise à jour"""
+        """Méthode à implémenter dans les pages spécifiques pour la mise à jour
+        """
         pass
 
     @staticmethod
