@@ -237,7 +237,7 @@ class MainWindow(QWidget):
         for url in urls:
             image_widget = ImageWidget(url)
             image_widget.setScaledContents(True)
-            image_widget.setFixedSize(QSize(300,500))
+            image_widget.setFixedSize(QSize(700,1000))
             container_layout.addWidget(image_widget)
 
         # Ajouter le container_widget dans la QScrollArea
