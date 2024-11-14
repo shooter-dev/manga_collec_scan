@@ -4,6 +4,7 @@ from PyQt5.QtCore import QSize, QCoreApplication, Qt
 from PyQt5.QtGui import QPixmap, QFont, QPainter, QBrush, QColor
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QHBoxLayout, QWidget, QSpacerItem, QSizePolicy
 
+from app.IHM.components.image_widget import ImageWidget
 from app.const import SIZE_IMAGE_NEWS_ITEM
 from app.lib.interface_widget import InterfaceWidget
 
@@ -11,7 +12,7 @@ from app.lib.interface_widget import InterfaceWidget
 class ItemNewsUiWidget(InterfaceWidget):
 
     def create_widgets(self, main_form: QWidget) -> Any:
-        self.image_volume_label = QLabel(main_form)
+        self.image_volume_label = ImageWidget(main_form)
         self.image_volume_label.setObjectName(u"image_volume_label")
 
         self.name_serie_label = QLabel(main_form)

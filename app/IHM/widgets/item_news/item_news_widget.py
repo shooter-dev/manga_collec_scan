@@ -31,6 +31,8 @@ class ItemNewsWidget(QWidget):
             self.ui.sponso_label.setText('SPONSORIS\u00c9')
         self.ui.sponso_label.setText('')
 
+        self.ui.image_volume_label.load_url(item_news.url_volume)
+
 
         # req = QtNetwork.QNetworkRequest(QUrl(item_news.url_volume))
         # downloader = ImgDownloader(self.ui.image_volume_label, req)

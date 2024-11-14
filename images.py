@@ -4,43 +4,7 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal, QSize
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QScrollArea, QScrollBar
 
-
-class ImageDownloadThread(QThread):
-    # Signal émis lorsque l'image est téléchargée
-    imageDownloaded = pyqtSignal(QPixmap)
-
-    def __init__(self, url):
-        super().__init__()
-        self.url = url
-
-    def run(self):
-        try:
-            # Télécharger l'image à partir de l'URL
-            response = requests.get(self.url)
-            pixmap = QPixmap()
-            pixmap.loadFromData(response.content)
-            self.imageDownloaded.emit(pixmap)  # Émettre le signal une fois l'image téléchargée
-        except Exception as e:
-            print(f"Erreur lors du téléchargement de l'image: {e}")
-            self.imageDownloaded.emit(QPixmap())  # Émettre une image vide en cas d'erreur
-
-
-class ImageWidget(QLabel):
-    def __init__(self, url):
-        super().__init__()
-        self.url = url
-        self.setAlignment(Qt.AlignCenter)
-
-        # Lancer le thread de téléchargement de l'image
-        self.downloadThread = ImageDownloadThread(url)
-        self.downloadThread.imageDownloaded.connect(self.updateImage)
-        self.downloadThread.start()
-
-    def updateImage(self, pixmap):
-        if pixmap.isNull():
-            self.setText("Échec du téléchargement")
-        else:
-            self.setPixmap(pixmap)
+from app.IHM.components.image_widget import ImageWidget
 
 
 class MainWindow(QWidget):
@@ -235,9 +199,10 @@ class MainWindow(QWidget):
 
         # Ajouter plusieurs widgets ImageWidget avec différentes URLs
         for url in urls:
-            image_widget = ImageWidget(url)
+            image_widget = ImageWidget(self)
+            image_widget.load_url(url)
             image_widget.setScaledContents(True)
-            image_widget.setFixedSize(QSize(700,1000))
+            image_widget.setFixedSize(QSize(500,700))
             container_layout.addWidget(image_widget)
 
         # Ajouter le container_widget dans la QScrollArea

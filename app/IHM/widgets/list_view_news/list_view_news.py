@@ -34,7 +34,6 @@ class ListViewNews(QListWidget):
         self.mock_list()
 
         for news_item in self.list_item_news:
-            print(news_item.url_volume)
             item = ItemNewsWidget(news_item)
             list_widget_item = QListWidgetItem(self)
             list_widget_item.setSizeHint(item.size())
