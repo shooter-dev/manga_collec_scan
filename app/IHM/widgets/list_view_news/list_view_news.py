@@ -33,6 +33,10 @@ class ListViewNews(QListWidget):
         self.itemClicked.connect(lambda item: print(f"Élément cliqué : {item.data(Qt.UserRole)}"))
         self.itemPressed.connect(lambda item: print(f"Élément press : {item.data(Qt.UserRole).serie_name}"))
 
+        self.setAttribute(Qt.WA_AcceptTouchEvents)
+        self.setVerticalScrollMode(QListWidget.ScrollPerPixel)
+        self.verticalScrollBar().setSingleStep(10)
+
         scroll_bar = self.verticalScrollBar()
         scroll_bar.setSingleStep(12)
 
