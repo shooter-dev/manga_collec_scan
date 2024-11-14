@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QObject, pyqtSignal, QEvent, Qt
+from PyQt5.QtGui import QKeyEvent
 
 
 class CodeBarreScan(QObject):
@@ -11,6 +12,14 @@ class CodeBarreScan(QObject):
     def eventFilter(self, obj, event):
         # Si l'événement est un keyPress (pression d'une touche)
         if event.type() == QEvent.KeyPress:
+            key_event = event
+
+            key = event.key()
+
+            if key == Qt.Key_K:
+                print("Escape key")
+
+            print(event.text())
             # Si la touche pressée est un chiffre, on l'ajoute au _buffer
             if event.text().isdigit():
                 self._buffer += event.text()
@@ -40,3 +49,4 @@ class CodeBarreScan(QObject):
         total = sum(int(barcode[i]) * (3 if i % 2 else 1) for i in range(12))
         checksum = (10 - (total % 10)) % 10
         return checksum == int(barcode[-1])
+

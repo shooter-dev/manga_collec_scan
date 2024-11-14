@@ -1,5 +1,6 @@
 from typing import Any, List
 
+from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from app.IHM.pages.news.news_ui_page import UiNewsPage

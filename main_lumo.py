@@ -1,60 +1,59 @@
-from PyQt5.QtWidgets import QApplication, QComboBox, QWidget, QVBoxLayout
-from PyQt5.QtCore import Qt, QEvent, QPoint
 import sys
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import Qt, Q_ARG, pyqtSignal, QMetaObject
+from pynput.keyboard import Key, Listener, KeyCode
 
-class SwipeComboBox(QComboBox):
+
+class KeyMonitor(QtCore.QObject):
+    keyPressed = pyqtSignal(KeyCode)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.listener = Listener(on_release=self.on_release)
+
+    def on_release(self, key):
+        # Émettre le signal dans le thread principal
+        print(key)
+
+    def emit_key(self, key):
+        # Cette méthode émet le signal keyPressed
+        self.keyPressed.emit(key)
+
+    def stop_monitoring(self):
+        self.listener.stop()
+
+    def start_monitoring(self):
+        self.listener.start()
+
+
+class MainWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-        self.setAttribute(Qt.WA_AcceptTouchEvents)
-        self.start_pos = None  # Pour stocker la position de départ du glissement
+        self.setWindowTitle("Key Press Monitor")
+        self.setGeometry(100, 100, 400, 300)
 
-    def touchEvent(self, event):
-        if event.type() == QEvent.TouchBegin:
-            # Enregistrer la position de départ du glissement
-            self.start_pos = event.touchPoints()[0].pos()
-        elif event.type() == QEvent.TouchEnd and self.start_pos is not None:
-            # Obtenir la position de fin du glissement
-            end_pos = event.touchPoints()[0].pos()
-            self.handleSwipe(end_pos)
-        return super().touchEvent(event)
+        self.label = QtWidgets.QLabel("Appuyez sur une touche...", self)
+        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setGeometry(50, 100, 300, 50)
 
-    def handleSwipe(self, end_pos):
-        # Calculer la différence entre la position de départ et la position de fin
-        delta_y = end_pos.y() - self.start_pos.y()
+    def update_label(self, key):
+        # Met à jour l'étiquette avec la touche pressée
+        if isinstance(key, KeyCode):
+            self.label.setText(f"Touche pressée : {key.char}")
+        else:
+            self.label.setText(f"Touche spéciale : {key}")
 
-        # Seuil pour déterminer si le mouvement est un glissement
-        swipe_threshold = 30
 
-        if delta_y > swipe_threshold:
-            # Glissement vers le bas - passer à l'élément suivant
-            self.setCurrentIndex((self.currentIndex() + 1) % self.count())
-        elif delta_y < -swipe_threshold:
-            # Glissement vers le haut - passer à l'élément précédent
-            self.setCurrentIndex((self.currentIndex() - 1) % self.count())
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
 
-        # Réinitialiser la position de départ
-        self.start_pos = None
+    # Créer le widget principal et la fenêtre
+    window = MainWindow()
 
-class MainWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("QComboBox avec navigation par glissement")
+    # Créer le moniteur de touches
+    monitor = KeyMonitor()
+    monitor.keyPressed.connect(window.update_label)
+    monitor.start_monitoring()
 
-        # Layout principal
-        layout = QVBoxLayout()
-
-        # Créer une instance de SwipeComboBox
-        combo_box = SwipeComboBox()
-        combo_box.addItems(["Option 1", "Option 2", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 3", "Option 4", "Option 5"])
-
-        # Ajouter le combo box au layout
-        layout.addWidget(combo_box)
-
-        # Configurer la fenêtre principale
-        self.setLayout(layout)
-
-# Application principale
-app = QApplication(sys.argv)
-window = MainWindow()
-window.show()
-sys.exit(app.exec_())
+    window.show()
+    sys.exit(app.exec_())

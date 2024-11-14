@@ -9,7 +9,7 @@ from app.IHM.widgets.left_menu.left_menu import LeftMenu
 
 class UiMainWindow(QObject):
 
-    def setup_ui(self, window: "MainWindow", layout: type(QBoxLayout)) -> Any:
+    def setup_ui(self, window, layout: type(QBoxLayout)) -> Any:
         self.init_page(window)
         self.create_widgets(window)
         self.modify_widgets(window)
