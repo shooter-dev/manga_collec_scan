@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPixmap, QFont, QPainter, QBrush, QColor
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QHBoxLayout, QWidget, QSpacerItem, QSizePolicy
 
 from app.IHM.components.image_widget import ImageWidget
-from app.const import SIZE_IMAGE_NEWS_ITEM
+from app.const import SIZE_IMAGE_NEWS_ITEM, RESOURCE_CAMERA_OFF, RESOURCE_BYTES_RECE, FONT_16, FONT_14, FONT_8
 from app.lib.interface_widget import InterfaceWidget
 
 
@@ -17,14 +17,6 @@ class ItemNewsUiWidget(InterfaceWidget):
 
         self.name_serie_label = QLabel(main_form)
         self.name_serie_label.setObjectName(u"name_serie_label")
-
-        self.font_8 = QFont()
-        self.font_8.setPointSize(8)
-        self.font_8.setFamily(U"Helvetica")
-
-        self.font_14 = QFont()
-        self.font_14.setPointSize(14)
-        self.font_14.setFamily(U"Helvetica")
 
         self.vertical_spacer_2 = QSpacerItem(2, 2, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
@@ -53,7 +45,7 @@ class ItemNewsUiWidget(InterfaceWidget):
         size = QSize(100, 17)
         self.sponso_label.setMinimumSize(size)
         self.sponso_label.setMaximumSize(size)
-        self.sponso_label.setFont(self.font_8)
+        self.sponso_label.setFont(FONT_8)
         self.sponso_label.setAlignment(Qt.AlignCenter)
         self.sponso_label.setStyleSheet(u"""
             border-color: rgb(28, 28, 30);
@@ -68,31 +60,19 @@ class ItemNewsUiWidget(InterfaceWidget):
         size = QSize(220, 17)
         self.name_tome_label.setMinimumSize(size)
         self.name_tome_label.setMaximumSize(size)
-        self.name_tome_label.setFont(self.font_14)
+        self.name_tome_label.setFont(FONT_14)
 
     def __update_name_serie_label(self):
         size = QSize(220, 20)
         self.name_serie_label.setMinimumSize(size)
         self.name_serie_label.setMaximumSize(size)
-        self.name_serie_label.setFont(self.font_14)
+        self.name_serie_label.setFont(FONT_14)
 
     def __update_image_volume_label(self):
-        size = QSize(220, 330)
-        self.image_volume_label.setMinimumSize(size)
-        self.image_volume_label.setMaximumSize(size)
-
-        pixmap = QPixmap(u"../../../assets/img/logo.png")
-
-        # self.image_volume_label.setStyleSheet(u"""
-        # #image_volume_label {
-        #     border-style: inset;
-        #     background-clip: border;
-        #     border-width: 1px;
-        #     border-radius: 9px; }
-        # """)
         self.image_volume_label.setFixedSize(SIZE_IMAGE_NEWS_ITEM)
         self.image_volume_label.setAlignment(Qt.AlignCenter)
-        self.image_volume_label.setPixmap(pixmap)
+        self.image_volume_label.set_pixmap_echec(QPixmap(RESOURCE_CAMERA_OFF))
+        self.image_volume_label.set_pixmap_chargement(QPixmap(RESOURCE_BYTES_RECE))
         self.image_volume_label.setScaledContents(True)
 
     def create_layouts(self, main_form: QWidget) -> Any:

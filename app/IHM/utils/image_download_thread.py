@@ -1,3 +1,5 @@
+from time import sleep
+
 import requests
 from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtGui import QPixmap
@@ -12,6 +14,7 @@ class ImageDownloadThread(QThread):
         self.url = url
 
     def run(self):
+        sleep(2)
         try:
             # Télécharger l'image à partir de l'URL
             response = requests.get(self.url)

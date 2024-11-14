@@ -14,9 +14,6 @@ class ItemNewsWidget(QWidget):
 
         self.ui = ItemNewsUiWidget()
         self.ui.setup_ui(self, QVBoxLayout)
-        size: QSize = QSize(238, 391)
-        self.setMinimumSize(size)
-        self.setMaximumSize(size)
 
         self.item_news = item_news
 

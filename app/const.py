@@ -18,6 +18,8 @@ RESOURCE_CPU: str = u":/icons/icons/black/info.svg"
 RESOURCE_MEMORY: str = u":/icons/icons/black/copy.svg"
 RESOURCE_BYTES_SEND: str = u":/icons/icons/black/arrow-up-circle.svg"
 RESOURCE_BYTES_RECE: str = u":/icons/icons/black/arrow-down-circle.svg"
+RESOURCE_CAMERA_OFF: str = u":/icons/icons/black/camera-off.svg"
+RESOURCE_CAMERA_ON: str = u":/icons/icons/black/camera-on.svg"
 
 RESOURCE_PAUSE: str = u":/icons/icons/black/pause.svg"
 RESOURCE_VALIDER: str = u":/icons/black/check.svg"
@@ -91,6 +93,8 @@ COLOR_CART = QColor(245, 176, 39)
 # FONT
 #family_helvetica: str = "Monospace"
 family_helvetica: str = "Helvetica"
+FONT_8: QFont = QFont(family_helvetica)
+FONT_8.setPixelSize(8)
 FONT_11: QFont = QFont(family_helvetica)
 FONT_11.setPixelSize(11)
 FONT_12: QFont = QFont(family_helvetica)
@@ -112,7 +116,7 @@ FONT_26.setPixelSize(26)
 # SIZE
 SIZE_BUTTON_MENU: QSize = QSize(64, 64)
 SIZE_ICON_BUTTON_MENU: QSize = QSize(26, 26)
-SIZE_IMAGE_NEWS_ITEM: QSize = QSize(220, 330)
+SIZE_IMAGE_NEWS_ITEM: QSize = QSize(193, 289)
 SIZE_PAGE_MIN: QSize = QSize(732, 480)
 
 # ICON

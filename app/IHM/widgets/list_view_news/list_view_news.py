@@ -35,6 +35,8 @@ class ListViewNews(QListWidget):
 
         for news_item in self.list_item_news:
             item = ItemNewsWidget(news_item)
+            item.setFixedSize(QSize(211, 350))
+
             list_widget_item = QListWidgetItem(self)
             list_widget_item.setSizeHint(item.size())
             self.setItemWidget(list_widget_item, item)
