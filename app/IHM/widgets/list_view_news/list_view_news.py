@@ -1,7 +1,7 @@
 from typing import List
 
-from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QListView, QWidget, QListWidget, QListWidgetItem
+from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtWidgets import QListView, QWidget, QListWidget, QListWidgetItem, QAbstractItemView
 
 from app.IHM.widgets.item_news.item_news_widget import ItemNewsWidget
 from app.models.news_item_model import NewsItemModel
@@ -27,6 +27,11 @@ class ListViewNews(QListWidget):
         self.setViewMode(QListWidget.IconMode)
         self.setSpacing(0)
         self.setResizeMode(QListView.ResizeMode.Fixed)
+        self.setDragDropMode(QAbstractItemView.NoDragDrop)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
+
+        self.itemClicked.connect(lambda item: print(f"Élément cliqué : {item.data(Qt.UserRole)}"))
+        self.itemPressed.connect(lambda item: print(f"Élément press : {item.data(Qt.UserRole).serie_name}"))
 
         scroll_bar = self.verticalScrollBar()
         scroll_bar.setSingleStep(12)
@@ -36,10 +41,13 @@ class ListViewNews(QListWidget):
         for news_item in self.list_item_news:
             item = ItemNewsWidget(news_item)
             item.setFixedSize(QSize(211, 350))
+            item.setToolTip("Ceci est une info-bulle")
 
             list_widget_item = QListWidgetItem(self)
             list_widget_item.setSizeHint(item.size())
+            list_widget_item.setData(Qt.UserRole, news_item)
             self.setItemWidget(list_widget_item, item)
+
 
     def touchEvent(self, event):
         # Traitez l'événement tactile ici
