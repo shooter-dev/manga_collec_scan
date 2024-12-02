@@ -37,7 +37,7 @@ class UiMainWindow(QObject):
 
     def modify_widgets(self, win):
         size_bar = QSize(720, 30)
-        size_menu = QSize(84, 1280 - size_bar.height())
+        size_menu = QSize(64, 1280 - size_bar.height())
         size_pages = QSize(720 - size_menu.width(), 1280 - size_bar.height())
 
         self.bar.setFixedSize(size_bar)

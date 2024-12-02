@@ -3,12 +3,13 @@ from typing import Dict, Tuple
 from PyQt5.QtCore import QSize, QEvent
 from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 
+from app.IHM.pages.collection.collection_page import CollectionPage
 from app.IHM.pages.home.home_page import HomePage
 from app.IHM.pages.news.news_page import NewsPage
 from app.lib.code_barre_scan import CodeBarreScan
 from app.lib.container import Container
 from app.lib.container_interface import ContainerInterface
-from app.lib.interface_page import InterfacePage
+from app.lib.controller import Controller
 from app.IHM.pages.window.ui_main_window import UiMainWindow
 from app.lib.route import Route
 from app.lib.router import Router
@@ -28,10 +29,6 @@ class MainWindow(QMainWindow):
         self.ui.setup_ui(window=self,layout=QVBoxLayout)
         self.router.add_stacked_widget(self.ui.pages_stack)
 
-        self.add_pages()
-
-        self.router.call_page('news')
-
         # self.code_barre_scan = CodeBarreScan()
 
         # # Connecter le signal scan_completed à une méthode pour afficher le résultat
@@ -39,11 +36,6 @@ class MainWindow(QMainWindow):
         #
         # # Installer le filtre d'événements sur la fenêtre principale pour capter les événements clavier
         # self.installEventFilter(self.code_barre_scan)
-
-
-    def add_pages(self):
-        self.router.add_route(Route("home", HomePage))
-        self.router.add_route(Route("news", NewsPage))
 
     def on_scan_completed(self, message):
         """Affiche le message du scan (code ou erreur)"""

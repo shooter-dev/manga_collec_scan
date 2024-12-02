@@ -2,7 +2,7 @@ from typing import Any
 
 from PyQt5.QtWidgets import QWidget, QLabel
 
-from app.lib.interface_page import InterfacePage
+from app.lib.controller import Controller
 from app.lib.interface_widget import InterfaceWidget
 
 
@@ -15,7 +15,7 @@ class UiHomePage(InterfaceWidget):
         self.label = QLabel(main_form)
 
     def modify_widgets(self, main_form: QWidget) -> Any:
-        self.label.setText("Home ...")
+        self.label.setText("Home ... :)")
 
     def create_layouts(self, main_form: QWidget) -> Any:
         pass

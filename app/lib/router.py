@@ -16,7 +16,7 @@ class Router:
         self.__stacked = stacked
 
     def add_route(self, route: Route):
-        window: "InterfacePage" = route.widget  # Prend la classe comme référence
+        window: "Controller" = route.widget  # Prend la classe comme référence
         route.widget = window(self.__stacked.parent())  # Crée une instance de la classe
         route.index = self.__stacked.addWidget(route.widget)  # Ajoute l'instance au `QStackedWidget`
         self.__routes.append(route)

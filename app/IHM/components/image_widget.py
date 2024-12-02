@@ -6,9 +6,11 @@ from app.IHM.utils.image_download_thread import ImageDownloadThread
 
 
 class ImageWidget(QLabel):
+
+    _cache = {}
     pixmap: QPixmap
-    pixmap_echec: QPixmap
-    pixmap_chargement: QPixmap
+    pixmap_echec: QPixmap = None
+    pixmap_chargement: QPixmap = None
 
     def __init__(self, parent: QWidget, loading_pix: QPixmap =None):
         super().__init__(parent)
@@ -24,9 +26,21 @@ class ImageWidget(QLabel):
 
     def load_url(self, url):
         """Télécharge et affiche l'image à partir de l'URL"""
-        self.setText("Chargement...")  # Afficher un message pendant le téléchargement
+
+        # Vérifier si l'image est dans le cache
+        if url in self._cache:
+            #print(f"Image chargée depuis le cache pour l'URL : {url}")
+            self.setPixmap(self._cache[url])
+            return
+
+            # Afficher l'image de chargement si définie
+        if self.pixmap_chargement:
+            self.setPixmap(self.pixmap_chargement)
+        else:
+            self.setText("Chargement...")
+
         self.downloadThread = ImageDownloadThread(url)
-        self.downloadThread.imageDownloaded.connect(self.updateImage)
+        self.downloadThread.imageDownloaded.connect(lambda pixmap: self.updateImage(url, pixmap))
         self.downloadThread.start()
 
     def set_pixmap_echec(self, pixmap: QPixmap):
@@ -37,11 +51,16 @@ class ImageWidget(QLabel):
         self.pixmap_chargement = QPixmap(pixmap)
 
 
-    def updateImage(self, pixmap):
+    def updateImage(self, url, pixmap):
         if pixmap.isNull():
-            if self.pixmap_echec.isNull():
-                self.setText("Échec ... :(")
-            else:
+            # Afficher l'image d'échec ou un texte par défaut
+            if self.pixmap_echec:
                 self.setPixmap(self.pixmap_echec)
+            else:
+                self.setText("Échec ... :(")
         else:
+            # Ajouter l'image au cache
+            self._cache[url] = pixmap
+            #print(f"Image mise en cache pour l'URL : {url}")
+            # Afficher l'image téléchargée
             self.setPixmap(pixmap)

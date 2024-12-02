@@ -6,10 +6,15 @@ from PyQt5.QtCore import QSize, Qt, QUrlQuery, QUrl, QByteArray, QObject, pyqtSi
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from PyQt5.QtWidgets import QApplication
 
+from app.IHM.pages.collection.collection_page import CollectionPage
+from app.IHM.pages.home.home_page import HomePage
+from app.IHM.pages.news.news_page import NewsPage
 from app.IHM.pages.window.main_windows import MainWindow
 from app.lib.container import Container
 from app.lib.container_interface import ContainerInterface
+from app.lib.route import Route
 from app.lib.router import Router
+from app.models.user import User
 from app.services.mangacollec.mangacollec import MangaCollec
 
 class PublisherLoader(QObject):
@@ -35,6 +40,7 @@ def main():
 
 
     router = Router()
+
     api_mangacollec = MangaCollec()
 
     container.set(Router,router)
@@ -42,12 +48,66 @@ def main():
 
     container.set_parameter('publishers', api_mangacollec.get_publisher_all_v2()['publishers'])
 
+    chargement_donnee(api_mangacollec, container)
 
     window = MainWindow(size, container, router)
 
+    add_routes(router)
+
+    router.call_page('collection')
 
     window.show()
     sys.exit(app.exec_())
+
+def chargement_donnee(api, container):
+    user = creat_user(api, container)
+    req_news = api.get_v2_news()
+    container.set_parameter("req_news", req_news)
+
+    req_types = api.get_genres_all_v1()
+    container.set_parameter("req_types", req_types)
+
+    req_publishers = api.get_publisher_all_v2()
+    container.set_parameter("req_publishers", req_publishers)
+
+    req_recommendation = api.get_v1_recommendation()
+    container.set_parameter("req_recommendation", req_recommendation)
+
+    req_collection = api.get_v2_collection_by_username(user.username)
+    container.set_parameter("req_collection", req_collection)
+
+    req_cart = api.cart()
+    container.set_parameter("req_cart", req_cart)
+
+def creat_user(api, container):
+    req_user = api.me()
+    user: User = User(
+        id=req_user['id'],
+        email=req_user['email'],
+        username=req_user['username'],
+        notification_email=req_user['notification_email'],
+        setting_collection_order=req_user['setting_collection_order'],
+        created_at=req_user['created_at'],
+        confirmed_at=req_user['confirmed_at'],
+        confirmation_sent_at=req_user['confirmation_sent_at'],
+        unconfirmed_email=req_user['unconfirmed_email'],
+        certify_adult=req_user['certify_adult'],
+        possessions_count=req_user['possessions_count'],
+        ad_home_banner=req_user['ad_home_banner'],
+        ad_native_home_first=req_user['ad_native_home_first'],
+        ad_native_planning_perso=req_user['ad_native_planning_perso'],
+        is_premium=req_user['is_premium'],
+        subscriptions=[]
+    )
+    container.set_parameter('me', user)
+    return user
+
+
+def add_routes(router):
+    router.add_route(Route("home", HomePage))
+    router.add_route(Route("news", NewsPage))
+    router.add_route(Route("collection", CollectionPage))
+
 
 def add_app_options(app):
     app.setAttribute(Qt.AA_DisableHighDpiScaling, True)  # Désactiver la mise à l'échelle DPI

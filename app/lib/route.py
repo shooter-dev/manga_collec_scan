@@ -2,9 +2,9 @@ from PyQt5.QtWidgets import QWidget
 
 class Route:
     name: str
-    widget: "InterfacePage"
+    widget: "Controller"
     index: int
-    def __init__(self,name: str, widget: "InterfacePage"):
+    def __init__(self,name: str, widget: "Controller"):
         self.name = name
         self.widget = widget
 

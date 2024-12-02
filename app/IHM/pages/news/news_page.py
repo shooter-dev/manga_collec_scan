@@ -4,16 +4,16 @@ from PyQt5.QtCore import QEvent
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from app.IHM.pages.news.news_ui_page import UiNewsPage
-from app.lib.interface_page import InterfacePage
+from app.lib.controller import Controller
 from app.models.publisher import Publisher
 
 
-class NewsPage(InterfacePage):
+class NewsPage(Controller):
     ui: UiNewsPage
 
     def page_update(self):
         publishers: List[Publisher] = []
-        publishers_data = self._container.get('publishers')
+        publishers_data = self.container.get('publishers')
         for publisher in publishers_data:
             print(publisher)
             publishers.append(

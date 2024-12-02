@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QSpacerItem, QSizePolicy
 
 from app.IHM.widgets.list_view_news.list_view_news import ListViewNews
 from app.IHM.widgets.news_header.news_header import NewsHeader
-from app.lib.interface_page import InterfacePage
+from app.lib.controller import Controller
 from app.lib.interface_widget import InterfaceWidget
 
 
